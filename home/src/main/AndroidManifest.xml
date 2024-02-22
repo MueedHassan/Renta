@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <activity
+            android:name=".components.NavGraph"
+            android:exported="false"
+            android:label="@string/title_activity_nav_graph"
+            android:theme="@style/Theme.Nstp" />
+        <activity
+            android:name=".tenants.frontend.ui.theme.BottomNavigationBar"
+            android:exported="false"
+            android:label="@string/title_activity_bottom_navigation_bar"
+            android:theme="@style/Theme.Nstp" />
+        <activity
+            android:name=".tenants.frontend.BottomNavGraph"
+            android:exported="false"
+            android:label="@string/title_activity_bottom_nav_graph"
+            android:theme="@style/Theme.Nstp" />
+        <activity
+            android:name=".tenants.frontend.BookAppointment"
+            android:exported="false"
+            android:label="@string/title_activity_book_appointment"
+            android:theme="@style/Theme.Nstp" />
+        <activity
+            android:name=".tenants.frontend.Favourites"
+            android:exported="false"
+            android:label="@string/title_activity_favourites"
+            android:theme="@style/Theme.Nstp" />
+        <activity
+            android:name=".tenants.frontend.HomeTenants"
+            android:exported="false"
+            android:label="@string/title_activity_home_tenants"
+            android:theme="@style/Theme.Nstp" />
+        <activity
+            android:name=".mainhomes"
+            android:exported="false"
+            android:label="@string/title_activity_mainhomes"
+            android:theme="@style/Theme.Nstp" />
+    </application>
+
+</manifest>
