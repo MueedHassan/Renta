@@ -15,7 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -23,8 +22,9 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 fun AddNewListing(
     icon: ImageVector,
-    text:String,
-    navigator: DestinationsNavigator
+    text: String,
+    navigator: DestinationsNavigator,
+    modifier: Modifier
 
 
 ){
@@ -32,9 +32,7 @@ fun AddNewListing(
         modifier = Modifier
             .padding(top=10.dp)
             .fillMaxWidth()
-            .clickable {
-//                navigator.navigate()
-            }
+            .then(modifier)
 
     ){
         Row(
