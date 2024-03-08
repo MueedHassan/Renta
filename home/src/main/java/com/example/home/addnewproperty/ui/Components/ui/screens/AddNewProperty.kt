@@ -15,6 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.home.addnewproperty.ui.Components.ui.components.AddNewListing
 import com.example.home.addnewproperty.ui.Components.ui.components.ExitButton
+import com.example.home.destinations.AddNewPropertyDestination
+import com.example.home.destinations.AddNewScreen1Destination
 import com.example.home.destinations.MainhomeDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -49,13 +51,22 @@ Column(
     AddNewListing(
         icon =Icons.Outlined.AddBusiness,
         text = "Create a new Listing",
-        navigator = navigator
+        navigator = navigator,
+        modifier=Modifier
+            .clickable {
+                navigator.navigate(AddNewScreen1Destination)
+            }
+
 
     )
     AddNewListing(
         icon =Icons.Outlined.AutoAwesomeMotion,
         text = "Duplicate an existing listing",
-        navigator = navigator
+        navigator = navigator,
+        modifier = Modifier
+            .clickable {
+                navigator.navigate(AddNewScreen1Destination)
+            }
 
     )
 

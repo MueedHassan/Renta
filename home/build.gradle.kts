@@ -3,8 +3,10 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id ("com.google.devtools.ksp")version "1.9.22-1.0.16"
     id("kotlin-kapt")
-
+//    id("com.google.android.gms:play-services-ads-identifier")
 }
+
+
 kotlin {
     sourceSets {
         debug {
@@ -57,7 +59,13 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
 }
+//repositories {
+//    google()
+//    mavenCentral()
+//
+//}
 
 dependencies {
 
@@ -81,6 +89,7 @@ dependencies {
     // Material Design 3
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.ui:ui")
+    //
 
     // Android Studio Preview support
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -121,4 +130,7 @@ dependencies {
     //Destination Rama
     implementation("io.github.raamcosta.compose-destinations:core:1.9.63")
     ksp("io.github.raamcosta.compose-destinations:ksp:1.9.63")
+    //APPLovin
+    implementation("com.applovin:applovin-sdk:12.3.0")
+
 }
