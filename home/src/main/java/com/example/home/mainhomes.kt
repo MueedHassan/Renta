@@ -71,31 +71,20 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
-//@RootNavGraph(start = true)
 @Destination(start=true)
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Mainhome(
     navigator: DestinationsNavigator
 ) {
     var statelazy = rememberLazyListState()
     val navController = rememberNavController()
-
     var offset by remember { mutableStateOf(0f) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-//    val navigator: DestinationsNavigator
-//    val internalClick = remember(onClick) {
-//        onClick ?: {
-//            navigator.navigate(AddNewPropertyMainScreenDestination())
-//        }
-//    }
-
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet (modifier=Modifier.fillMaxWidth(0.7f)){
-
                 Text("Renta", modifier = Modifier.padding(16.dp))
                 Divider()
                 Button(
@@ -104,7 +93,6 @@ fun Mainhome(
                         backgroundColor = MaterialTheme.colorScheme.primary,
                         contentColor =MaterialTheme.colorScheme.inverseOnSurface
                     ),
-
                     modifier = Modifier
                         .padding(vertical = 20.dp)
                         .clip(shape = RoundedCornerShape(1.dp))
@@ -117,10 +105,7 @@ fun Mainhome(
                     Text(
                         text =" Switch To Host/Landlord",
                         style=MaterialTheme.typography.bodyLarge
-
                     )
-
-
                 }
                 Divider()
                 NavigationDrawerItem(
@@ -131,10 +116,7 @@ fun Mainhome(
               AddNewPropertyDestination(),false
                   )
                               /*TODO*/},
-//                    icon = Icons.Default.Add
-
                 ) }
-
         },
     ){
     Scaffold(
@@ -157,20 +139,14 @@ fun Mainhome(
           BottomNavigationBar(navController = navController)
 
       },
-
-
     ) { values ->
         offset= statelazy.firstVisibleItemIndex.toFloat()
         NavHostContainer(navController = navController, padding = values)
-
         LazyColumn(
             state = statelazy,
-
             modifier = Modifier
                 .fillMaxSize()
-
                 .padding(values)
-
         ) {
             items(100) {
                 Text(
@@ -181,9 +157,6 @@ fun Mainhome(
         }
         }
     }}
-
-
-
 @Composable
 fun AppBarShrinked() {
     Box(
@@ -194,7 +167,6 @@ fun AppBarShrinked() {
                 shape = RoundedCornerShape(
                     bottomStart = 40.dp,
                     bottomEnd = 40.dp
-
                 )
             )
             .background(
@@ -208,10 +180,8 @@ fun AppBarShrinked() {
                 top = 10.dp
             )
         )
-
     }
 }
-
 @Composable
 fun AppBarExpendable(scope: CoroutineScope, drawerstate: DrawerState) {
     Box(
@@ -242,7 +212,6 @@ fun AppBarExpendable(scope: CoroutineScope, drawerstate: DrawerState) {
                         }
                     }
                 },
-
         )
         Text(
             text = "Renta",
@@ -251,8 +220,6 @@ fun AppBarExpendable(scope: CoroutineScope, drawerstate: DrawerState) {
             modifier = Modifier
                 .padding(start = 53.dp)
                 .align(Alignment.TopStart)
-
-
         )
         Swipeable()
         SearchRow(
@@ -262,14 +229,11 @@ fun AppBarExpendable(scope: CoroutineScope, drawerstate: DrawerState) {
             )
         )
     }
-
 }
-
 @Composable
 fun SearchRow(
     modifier: Modifier = Modifier
 ) {
-
     Row(
         modifier = Modifier
             .then(modifier)
@@ -280,9 +244,7 @@ fun SearchRow(
         Spacer(modifier = Modifier.width(5.dp))
         FilterBox()
     }
-
 }
-
 @Composable
 fun FilterBox() {
     Box(
@@ -303,12 +265,10 @@ fun FilterBox() {
         )
     }
 }
-
 @Composable
 fun SearchBox() {
     Box(
         modifier = Modifier
-
             .height(60.dp)
             .fillMaxWidth(0.8f)
             .padding(start = 0.dp, top = 5.dp, bottom = 5.dp, end = 0.dp)
@@ -332,16 +292,9 @@ fun SearchBox() {
                 .align(alignment = Alignment.CenterStart)
                 .padding(start = 35.dp),
             style = MaterialTheme.typography.bodyLarge
-
-
         )
-
-
     }
-
-
 }
-
 @OptIn(ExperimentalWearMaterialApi::class)
 @Composable
 private fun Swipeable() {
@@ -351,7 +304,6 @@ private fun Swipeable() {
     val swipeableState = rememberSwipeableState(0)
     val sizePx = with(LocalDensity.current) { squareSize.toPx() }
     val anchors = mapOf(0f to 0, sizePx to 1) // Maps anchor points (in px) to states
-
     Box(
         modifier = Modifier
             .padding(
@@ -360,7 +312,6 @@ private fun Swipeable() {
             )
             .clip(
                 shape = RoundedCornerShape(40.dp)
-
             )
             .width(width)
             .height(40.dp)
@@ -373,7 +324,6 @@ private fun Swipeable() {
             .background(
                 color = MaterialTheme.colorScheme.inversePrimary.copy(alpha = 0.5f)
             )
-
     ) {
         Text(
             text = "Tenant",
@@ -402,18 +352,12 @@ private fun Swipeable() {
         )
     }
 }
-
-
-
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
 
     BottomNavigation(
-
-        // set background color
         backgroundColor = MaterialTheme.colorScheme.background,
         contentColor = MaterialTheme.colorScheme.primary,
-
         modifier = Modifier
             .border(
                 0.25.dp, color =
@@ -427,30 +371,16 @@ fun BottomNavigationBar(navController: NavHostController) {
 
                 )
     ) {
-
-        // observe the backstack
         val navBackStackEntry by navController.currentBackStackEntryAsState()
-
-        // observe current route to change the icon
-        // color,label color when navigated
         val currentRoute = navBackStackEntry?.destination?.route
 
-        // Bottom nav items we declared
         Constants.BottomNavItems.forEach { navItem ->
-
-            // Place the bottom nav items
             BottomNavigationItem(
                selectedContentColor = MaterialTheme.colorScheme.outline,
-                // it currentRoute is equal then its selected route
                 selected = currentRoute == navItem.route,
-
-                // navigate on click
                 onClick = {
-
                     navController.navigate(navItem.route)
                 },
-
-                // Icon of navItem
                 icon = {
                     Icon(
                         modifier = Modifier
@@ -463,7 +393,6 @@ fun BottomNavigationBar(navController: NavHostController) {
 
                     )
                 },
-                // label
                 label = {
                     Text(text = navItem.label,
                     color=MaterialTheme.colorScheme.primary,
@@ -475,7 +404,6 @@ fun BottomNavigationBar(navController: NavHostController) {
         }
     }
 }
-
 @Composable
 fun NavigationDrawer(){
     ModalNavigationDrawer(
@@ -493,13 +421,9 @@ fun NavigationDrawer(){
                     horizontalAlignment = Alignment.CenterHorizontally,
                 )
                 {
-
-
-
                 }
             }
         }
     ){
-
     }
 }

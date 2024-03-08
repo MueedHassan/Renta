@@ -107,6 +107,14 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     implementation(project(":home"))
     implementation(project(":addnewproperty"))
+    //APPLovin
+    implementation("com.applovin:applovin-sdk:12.3.0")
 
 
 }
+/*
+repositories {
+    google()
+    mavenCentral()
+
+}*/
