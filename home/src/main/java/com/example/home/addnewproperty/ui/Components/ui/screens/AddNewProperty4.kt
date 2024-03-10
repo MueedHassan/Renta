@@ -33,6 +33,7 @@ import com.example.home.R
 import com.example.home.addnewproperty.ui.Components.ui.components.ProgressIndicator
 import com.example.home.addnewproperty.ui.Components.ui.components.TopRoundedButton
 import com.example.home.destinations.AddNewScreen1Destination
+import com.example.home.destinations.AddNewScreen5Destination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Destination
@@ -83,7 +84,7 @@ fun AddNewScreen4(navigator:DestinationsNavigator){
         }
         ProgressIndicator(progressindicator = 0.4f,
             navigator = navigator,
-            destination = AddNewScreen1Destination,
+            destination = AddNewScreen5Destination,
             modifier = Modifier.align(Alignment.BottomStart))
     }
 }
@@ -158,14 +159,15 @@ fun WashroomBathroomButton(modifier: Modifier=Modifier,text:String){
             shape = RoundedCornerShape(40.dp)
         )
         .background(color = color)
-
         .height(40.dp)
         .then(modifier)
     ){
         Text(text = text,
             style = MaterialTheme.typography.bodySmall,
             color=textcolor,
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier
+                .padding(horizontal = 5.dp)
+                .align(Alignment.Center)
             )
     }
 }

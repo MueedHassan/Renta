@@ -26,6 +26,7 @@ fun TopRoundedButton(
 
     )
 { Box (modifier= Modifier
+    .then(modifier)
         .width(100.dp)
         .height(40.dp)
         .clickable { navigator.navigate(
@@ -35,7 +36,7 @@ fun TopRoundedButton(
         .border(
             1.dp, color = MaterialTheme.colorScheme.outline,
             shape = RoundedCornerShape(20.dp))
-    .then(modifier)
+
     ){
     Text(text = text,
             modifier=
