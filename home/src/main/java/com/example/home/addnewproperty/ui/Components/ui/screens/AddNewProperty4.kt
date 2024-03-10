@@ -1,6 +1,7 @@
 package com.example.home.addnewproperty.ui.Components.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -31,9 +33,9 @@ import com.example.home.R
 import com.example.home.addnewproperty.ui.Components.ui.components.ProgressIndicator
 import com.example.home.addnewproperty.ui.Components.ui.components.TopRoundedButton
 import com.example.home.destinations.AddNewScreen1Destination
+import com.example.home.destinations.AddNewScreen5Destination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-
 @Destination
 @Composable
 fun AddNewScreen4(navigator:DestinationsNavigator){
@@ -60,7 +62,8 @@ fun AddNewScreen4(navigator:DestinationsNavigator){
             )
             AddressRows(icon = R.drawable.citylocation,
                 label ="Bedrooms",
-                labeltext ="Enter City")
+                labeltext ="Enter City",
+                flag = false)
             Divider(
                 modifier = Modifier
                     .padding(vertical = 20.dp)
@@ -71,8 +74,8 @@ fun AddNewScreen4(navigator:DestinationsNavigator){
             )
             AddressRows(icon = R.drawable.location,
                 label ="Washrooms",
-                labeltext ="Enter Your")
-
+                labeltext ="Enter Your",
+                flag = true)
             Divider(
                 modifier = Modifier
                     .padding(vertical = 20.dp)
@@ -81,13 +84,12 @@ fun AddNewScreen4(navigator:DestinationsNavigator){
         }
         ProgressIndicator(progressindicator = 0.4f,
             navigator = navigator,
-            destination = AddNewScreen1Destination,
+            destination = AddNewScreen5Destination,
             modifier = Modifier.align(Alignment.BottomStart))
     }
-
 }
 @Composable
-fun AddressRows(icon: Int, label: String, labeltext: String) {
+fun AddressRows(icon: Int, label: String, labeltext: String,flag:Boolean) {
     var city by rememberSaveable { mutableStateOf("") }
     Row {
         Box(modifier = Modifier
@@ -112,52 +114,79 @@ fun AddressRows(icon: Int, label: String, labeltext: String) {
                 text = label,
                 style= MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.W900),
             )
-          Washroom()
-
-//            TextField(
-//                value = city,
-//                onValueChange = {city=it},
-//                label ={ Text(text = labeltext) },
-//                modifier = Modifier
-//                    .fillMaxWidth(0.95f)
-//                    .padding(top = 10.dp), // Adjust the width as needed
-//                colors = TextFieldDefaults.textFieldColors(
-//                    backgroundColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
-//                )
-//
-//            )
+            if (flag==true){
+                Washroom()
+            }
+            else
+            {
+                Bedroom()
+            }
         }
-
     }
 }
 @Composable
 fun Washroom()
-{
-    Row {
-        WashroomBathroomButton(text = "1")
-        WashroomBathroomButton(text = "1")
-        WashroomBathroomButton(text = "1")
+{ Row (modifier = Modifier.padding(vertical = 10.dp)){
+        WashroomBathroomButton(text = "1", modifier = Modifier.width(40.dp))
+        WashroomBathroomButton(text = "2",modifier = Modifier.width(40.dp))
+        WashroomBathroomButton(text = "3",modifier = Modifier.width(40.dp))
+        WashroomBathroomButton(text = "4",modifier = Modifier.width(40.dp))
+        WashroomBathroomButton(text = "5",modifier = Modifier.width(40.dp))
+        WashroomBathroomButton(text = "6",modifier = Modifier.width(40.dp))
     }
-
-
 }
 @Composable
 fun WashroomBathroomButton(modifier: Modifier=Modifier,text:String){
-
+    var isTouched by remember { mutableStateOf(false) }
+    val color = if (isTouched) {
+        MaterialTheme.colorScheme.primary.copy(alpha = 0.4f)
+    } else {
+        MaterialTheme.colorScheme.outline.copy(alpha=0.1f)
+    }
+    val textcolor = if (isTouched) {
+        MaterialTheme.colorScheme.primary.copy(alpha = 0.9f)
+    } else {
+        MaterialTheme.colorScheme.outline.copy(alpha=0.9f)
+    }
     Box (modifier = Modifier
-        .clip(shape = RoundedCornerShape(40.dp))
-        .border(2.dp, color = MaterialTheme.colorScheme.primary)
-        .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f))
-        .height(20.dp)
+        .clickable {
+            isTouched = !isTouched
+        }
         .padding(horizontal = 10.dp)
+        .clip(shape = RoundedCornerShape(40.dp))
+        .border(
+            1.dp, color = MaterialTheme.colorScheme.primary,
+            shape = RoundedCornerShape(40.dp)
+        )
+        .background(color = color)
+        .height(40.dp)
         .then(modifier)
     ){
         Text(text = text,
             style = MaterialTheme.typography.bodySmall,
-            color=MaterialTheme.colorScheme.outline,
-            modifier = Modifier.align(Alignment.Center)
+            color=textcolor,
+            modifier = Modifier
+                .padding(horizontal = 5.dp)
+                .align(Alignment.Center)
             )
-
     }
-
+}
+@Composable
+fun Bedroom(){
+    Column() {
+        Row (modifier = Modifier.padding(vertical = 10.dp)){
+            WashroomBathroomButton(text = "Studio", modifier = Modifier.width(80.dp))
+            WashroomBathroomButton(text = "1", modifier = Modifier.width(40.dp))
+            WashroomBathroomButton(text = "2",modifier = Modifier.width(40.dp))
+            WashroomBathroomButton(text = "3",modifier = Modifier.width(40.dp))
+        }
+        Row (modifier = Modifier.padding(vertical = 10.dp)){
+            WashroomBathroomButton(text = "4", modifier = Modifier.width(40.dp))
+            WashroomBathroomButton(text = "5",modifier = Modifier.width(40.dp))
+            WashroomBathroomButton(text = "6",modifier = Modifier.width(40.dp))
+            WashroomBathroomButton(text = "7",modifier = Modifier.width(40.dp))
+            WashroomBathroomButton(text = "8",modifier = Modifier.width(40.dp))
+            WashroomBathroomButton(text = "9",modifier = Modifier.width(40.dp))
+        }
+    }
 }

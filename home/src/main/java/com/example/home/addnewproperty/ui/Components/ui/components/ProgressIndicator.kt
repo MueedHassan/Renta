@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.home.destinations.AddNewScreen3Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.spec.Direction
@@ -27,12 +28,14 @@ fun ProgressIndicator(
     progressindicator: Float,
     navigator: DestinationsNavigator,
     destination:Direction,
-    modifier: Modifier=Modifier
+    modifier: Modifier=Modifier,
+    flag:Boolean=false
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp).then(modifier)
+            .height(80.dp)
+            .then(modifier)
     ) {
         Row() {
             LinearProgressIndicator(
@@ -58,8 +61,17 @@ fun ProgressIndicator(
                     navigator.navigate(destination)
                 }
         ) {
+            val value:String
+            if(flag==true)
+            {
+                value="Finish"
+            }
+            else
+            {
+                value="Next"
+            }
             Text(
-                text = "Next",
+                text = value,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.surface,
                 modifier = Modifier

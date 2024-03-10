@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import com.example.home.R
 import com.example.home.addnewproperty.ui.Components.ui.components.ProgressIndicator
 import com.example.home.addnewproperty.ui.Components.ui.components.TopRoundedButton
-import com.example.home.destinations.AddNewScreen1Destination
 import com.example.home.destinations.AddNewScreen4Destination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator

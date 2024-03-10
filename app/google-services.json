@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "149560507761",
+    "project_id": "my-fyp-renta",
+    "storage_bucket": "my-fyp-renta.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149560507761:android:25f160fa88c475245a8ad0",
+        "android_client_info": {
+          "package_name": "com.example.nstp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "149560507761-l08i3kqauh4aaoub00c17s3nomed2v8k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nstp",
+            "certificate_hash": "1c3ec34b25df724a0685f105c3475e116f4b1ed3"
+          }
+        },
+        {
+          "client_id": "149560507761-hpuou4nr4dsqvugs7tdt9rcfr8om51at.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAi4KqpXP3O-3qsi4SACz4kWVuAGozHfds"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "149560507761-hpuou4nr4dsqvugs7tdt9rcfr8om51at.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

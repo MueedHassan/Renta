@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt")
     id("org.jetbrains.kotlin.android")
     id ("com.google.devtools.ksp")version "1.9.22-1.0.16"
+    id("com.google.gms.google-services")
 }
 kotlin {
     sourceSets {
@@ -83,9 +84,9 @@ dependencies {
 
     // Android Studio Preview support
     implementation("androidx.compose.ui:ui-tooling-preview")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.02.01"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.02.01"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.02.01"))
     debugImplementation("androidx.compose.ui:ui-tooling")
 
     // UI Tests
@@ -109,6 +110,9 @@ dependencies {
     implementation(project(":addnewproperty"))
     //APPLovin
     implementation("com.applovin:applovin-sdk:12.3.0")
+
+    implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
+    implementation("com.google.firebase:firebase-analytics")
 
 
 }
