@@ -162,10 +162,12 @@ fun AddNewScreen6(navigator: DestinationsNavigator) {
                 }
             }
         }
-        ProgressIndicator(progressindicator = 0.8f,
+        ProgressIndicator(
+            progressindicator = 0.8f,
             navigator = navigator,
             destination = AddnewScrren7Destination,
-        modifier = Modifier.align(Alignment.BottomStart)
+            modifier = Modifier.align(Alignment.BottomStart),
+//            function = vm.AddDataScreen1(data),
         )
     }
 

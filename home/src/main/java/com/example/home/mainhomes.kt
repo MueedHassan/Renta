@@ -1,5 +1,6 @@
 package com.example.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -29,7 +30,6 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -49,6 +49,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
@@ -66,12 +67,12 @@ import com.example.home.destinations.AddNewPropertyDestination
 import com.example.home.entities.Constants
 import com.example.home.tenants.frontend.NavHostContainer
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
-@Destination(start=true)
+
+@Destination
 @Composable
 fun Mainhome(
     navigator: DestinationsNavigator
@@ -101,7 +102,7 @@ fun Mainhome(
                         .align(Alignment.CenterHorizontally),
 
 
-                ){
+                    ){
                     Text(
                         text =" Switch To Host/Landlord",
                         style=MaterialTheme.typography.bodyLarge
@@ -112,49 +113,104 @@ fun Mainhome(
                     label = { Text(text ="Add New Property") },
                     selected = false,
                     onClick = {
-                       navigator.navigate(
-              AddNewPropertyDestination(),false
-                  )
-                              /*TODO*/},
+                        navigator.navigate(
+                            AddNewPropertyDestination(),false
+                        )
+                        /*TODO*/},
                 ) }
         },
     ){
-    Scaffold(
+        Scaffold(
 
-        modifier = Modifier
-            .fillMaxSize(),
-        topBar = {
-            if(offset.toInt() ==0)
-            {
-                AppBarExpendable(drawerstate=drawerState,scope=scope)
-            }
-            else
-            {
-                AppBarShrinked()
-
-            }
-        },
-
-      bottomBar ={
-          BottomNavigationBar(navController = navController)
-
-      },
-    ) { values ->
-        offset= statelazy.firstVisibleItemIndex.toFloat()
-        NavHostContainer(navController = navController, padding = values)
-        LazyColumn(
-            state = statelazy,
             modifier = Modifier
-                .fillMaxSize()
-                .padding(values)
-        ) {
-            items(100) {
-                Text(
-                    text = "Item$it",
-                    modifier = Modifier.padding(values)
+                .fillMaxSize(),
+            topBar = {
+                if(offset.toInt() ==0)
+                {
+                    AppBarExpendable(drawerstate=drawerState,scope=scope)
+                }
+                else
+                {
+                    AppBarShrinked()
+
+                }
+            },
+
+            bottomBar ={
+                BottomNavigationBar(navController = navController)
+
+            },
+        ) { values ->
+            offset= statelazy.firstVisibleItemIndex.toFloat()
+            NavHostContainer(navController = navController, padding = values)
+            val imageslist= listOf(
+                R.drawable.home1,
+                R.drawable.home3,
+                R.drawable.home4,
+                R.drawable.home6,
+            )
+            val imagetextlist= listOf(
+                "Villa",
+                "Bungalow",
+                "Studio Apartment",
+                "Shared Room",
+                "Home",
+                "Flat"
                 )
+            val imagepricelist= listOf(
+                "$85","$65",
+                "$15","$895",
+                "$850","$65o"
+            )
+            LazyColumn(
+                state = statelazy,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(values)
+            ) {
+                items(imageslist.size) {
+                    Box (
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .clip(shape= RoundedCornerShape(15.dp))
+                            .fillParentMaxWidth(0.9f)
+                    ){
+                        Image(
+                            painter = painterResource(id = imageslist[it])
+                            , contentDescription =null,
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .clip(shape= RoundedCornerShape(15.dp))
+                                .fillParentMaxWidth()
+                                .height(200.dp)
+                                .align(Alignment.TopCenter)
+                            )
+                        Text(
+                            text = imagetextlist[it],
+                            style = MaterialTheme.typography.headlineMedium.copy(),
+                            color = Color.Black,
+                            modifier = Modifier
+                                .padding(
+                                    start = 40.dp,
+                                    bottom = 35.dp)
+                                .align(Alignment.BottomStart)
+
+                            )
+                        Text(
+                            text = imagepricelist[it],
+                            style = MaterialTheme.typography.headlineSmall.copy(),
+                            color = Color.Black,
+                            modifier = Modifier
+                                .padding(
+                                    start = 40.dp,
+                                    bottom = 10.dp)
+                                .align(Alignment.BottomStart)
+
+                        )
+                    }
+
+                }
             }
-        }
         }
     }}
 @Composable
@@ -376,7 +432,7 @@ fun BottomNavigationBar(navController: NavHostController) {
 
         Constants.BottomNavItems.forEach { navItem ->
             BottomNavigationItem(
-               selectedContentColor = MaterialTheme.colorScheme.outline,
+                selectedContentColor = MaterialTheme.colorScheme.outline,
                 selected = currentRoute == navItem.route,
                 onClick = {
                     navController.navigate(navItem.route)
@@ -395,7 +451,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                 },
                 label = {
                     Text(text = navItem.label,
-                    color=MaterialTheme.colorScheme.primary,
+                        color=MaterialTheme.colorScheme.primary,
                         style=MaterialTheme.typography.bodySmall
                     )
                 },

@@ -1,5 +1,4 @@
 package com.example.home.addnewproperty.ui.Components.ui.screens
-
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -13,27 +12,30 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.home.addnewproperty.ui.Components.ui.components.AddNewListing
 import com.example.home.addnewproperty.ui.Components.ui.components.ExitButton
-import com.example.home.destinations.AddNewPropertyDestination
+import com.example.home.addnewproperty.ui.Components.ui.vm.AddNewPropertyVm
 import com.example.home.destinations.AddNewScreen1Destination
 import com.example.home.destinations.MainhomeDestination
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 
 @Destination
 @Composable
-fun AddNewProperty(navigator: DestinationsNavigator){
-Column(
+fun AddNewProperty(navigator: DestinationsNavigator,
+                   vm: AddNewPropertyVm= viewModel()
+){
+    Column(
     modifier=Modifier.padding(20.dp)
 )
 {
-
     ExitButton(modifier=Modifier.clickable{
         navigator.navigate(MainhomeDestination,false)
     })
-
     Text(text = "Welcome",
         modifier= Modifier
             .align(Alignment.Start)
@@ -41,7 +43,6 @@ Column(
         style=MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.W900),
 
     )
-
     Text(text = "Start New Listing",
         modifier= Modifier
             .align(Alignment.Start)
@@ -56,20 +57,17 @@ Column(
             .clickable {
                 navigator.navigate(AddNewScreen1Destination)
             }
-
-
     )
     AddNewListing(
         icon =Icons.Outlined.AutoAwesomeMotion,
         text = "Duplicate an existing listing",
         navigator = navigator,
         modifier = Modifier
-            .clickable {
+            .clickable{
+
                 navigator.navigate(AddNewScreen1Destination)
             }
-
     )
-
-
 }
 }
+

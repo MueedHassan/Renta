@@ -127,11 +127,13 @@ fun AddnewScrren7(navigator: DestinationsNavigator){
             
 
         }
-        ProgressIndicator(progressindicator = 1f,
-            navigator =navigator ,
+        ProgressIndicator(
+            progressindicator = 1f,
+            navigator =navigator,
             destination = MainhomeDestination,
+            modifier = Modifier.align(Alignment.BottomStart),
             flag =true,
-            modifier = Modifier.align(Alignment.BottomStart)
+//            function = vm.AddDataScreen1(data),
         )
     }
 }

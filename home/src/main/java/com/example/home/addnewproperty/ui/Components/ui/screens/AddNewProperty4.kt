@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import com.example.home.R
 import com.example.home.addnewproperty.ui.Components.ui.components.ProgressIndicator
 import com.example.home.addnewproperty.ui.Components.ui.components.TopRoundedButton
-import com.example.home.destinations.AddNewScreen1Destination
 import com.example.home.destinations.AddNewScreen5Destination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -82,10 +81,13 @@ fun AddNewScreen4(navigator:DestinationsNavigator){
                     .background(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
             )
         }
-        ProgressIndicator(progressindicator = 0.4f,
+        ProgressIndicator(
+            progressindicator = 0.4f,
             navigator = navigator,
             destination = AddNewScreen5Destination,
-            modifier = Modifier.align(Alignment.BottomStart))
+            modifier = Modifier.align(Alignment.BottomStart),
+//            function = vm.AddDataScreen1(data),
+        )
     }
 }
 @Composable

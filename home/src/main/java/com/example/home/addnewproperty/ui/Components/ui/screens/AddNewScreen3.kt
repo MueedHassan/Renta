@@ -1,6 +1,7 @@
 package com.example.home.addnewproperty.ui.Components.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,8 +18,10 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -29,21 +32,45 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.home.R
 import com.example.home.addnewproperty.ui.Components.ui.components.ProgressIndicator
 import com.example.home.addnewproperty.ui.Components.ui.components.TopRoundedButton
+import com.example.home.addnewproperty.ui.Components.ui.vm.AddNewPropertyVm
+import com.example.home.destinations.AddNewScreen3Destination
 import com.example.home.destinations.AddNewScreen4Destination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 @Destination
-fun AddNewScreen3(navigator: DestinationsNavigator)
-{
-    Box (modifier =Modifier
-        .padding(top = 10.dp,start=10.dp,end=10.dp)
-        .fillMaxWidth()
-        .fillMaxHeight()){
+fun AddNewScreen3(navigator: DestinationsNavigator,
+                  vm: AddNewPropertyVm = viewModel()) {
+    var dataupdated by rememberSaveable { mutableStateOf(hashMapOf<String, Any?>()) }
+    var city by rememberSaveable { mutableStateOf("") }
+    var area by rememberSaveable { mutableStateOf("") }
+    var price by rememberSaveable { mutableStateOf("") }
+    var location by rememberSaveable { mutableStateOf("") }
+
+    LaunchedEffect(vm.documentId) {
+        // Introduce a delay to allow time for the documentId to be set
+        delay(1000) // You can adjust the delay as needed
+
+        if (vm.documentId == null) {
+            // Document ID is available, you can use it
+            println("Document ID in AddNewScreen3: ${vm.documentId}")
+        }
+    }
+
+    Box(
+        modifier = Modifier
+            .padding(top = 10.dp, start = 10.dp, end = 10.dp)
+            .fillMaxWidth()
+            .fillMaxHeight()
+    ) {
         Column(
             modifier = Modifier.align(Alignment.TopStart)
         ) {
@@ -61,91 +88,153 @@ fun AddNewScreen3(navigator: DestinationsNavigator)
             Spacer(
                 modifier = Modifier.height(40.dp)
             )
-            AddressRow(icon = R.drawable.citylocation,
-                label ="City",
-                labeltext ="Enter City")
-            Divider(
-                modifier = Modifier
-                    .padding(vertical = 20.dp)
-                    .background(color = MaterialTheme.colorScheme.outline
-                        .copy(alpha = 0.5f))
-            )
-            AddressRow(icon = R.drawable.location,
-                label ="Location",
-                labeltext ="Enter Your")
+            city =
+                AddressRow(icon = R.drawable.citylocation, label = "City", labeltext = "Enter City")
 
             Divider(
                 modifier = Modifier
                     .padding(vertical = 20.dp)
                     .background(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
             )
-            AddressRow(icon = R.drawable.size,
-                label ="Area",
-                labeltext ="Enter Area in square feat")
+            location =
+                AddressRow(icon = R.drawable.location, label = "Location", labeltext = "Enter Your")
 
             Divider(
                 modifier = Modifier
                     .padding(vertical = 20.dp)
                     .background(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
             )
-            AddressRow(icon = R.drawable.price, label ="Price", labeltext ="Enter An Estimated Prize")
+            area = AddressRow(
+                icon = R.drawable.size,
+                label = "Area",
+                labeltext = "Enter Area in square feat"
+            )
 
             Divider(
                 modifier = Modifier
                     .padding(vertical = 20.dp)
                     .background(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
             )
+            price = AddressRow(
+                icon = R.drawable.price,
+                label = "Price",
+                labeltext = "Enter An Estimated Prize"
+            )
+
+            Divider(
+                modifier = Modifier
+                    .padding(vertical = 20.dp)
+                    .background(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
+            )
+        }
+
+            var progressindicator = 0.2f
+            var destination = AddNewScreen4Destination
+            var modifier = Modifier.align(Alignment.BottomStart)
+            var flag=false
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
+                    .then(modifier)
+            ) {
+                Row() {
+                    LinearProgressIndicator(
+                        progress = progressindicator,
+                        modifier = Modifier
+                            .height(5.dp)
+                            .fillMaxWidth()
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .height(60.dp)
+                        .width(80.dp)
+                        .padding(10.dp)
+                        .clip(
+                            shape = RoundedCornerShape(10.dp)
+                        )
+                        .background(
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        .align(Alignment.CenterEnd)
+                        .clickable {
+                            vm.viewModelScope.launch{
+                                vm.updateDataForDocumentId( hashMapOf(
+                                    "City" to city,
+                                    "Area" to area,
+                                    "Price" to price,
+                                    "Location" to location
+                                ))
+                            }
+
+                            navigator.navigate(destination)
+                        }
+                ) {
+                    val value:String
+                    if(flag==true)
+                    {
+                        value="Finish"
+                    }
+                    else
+                    {
+                        value="Next"
+                    }
+                    androidx.compose.material3.Text(
+                        text = value,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.surface,
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                    )
+                }
+            }
+
 
         }
-        ProgressIndicator(progressindicator = 0.3f,
-            navigator = navigator,
-            destination = AddNewScreen4Destination,
-            modifier = Modifier.align(Alignment.BottomStart))
 
-
-
-    }
 
 }
+
 @Composable
-fun AddressRow(icon: Int, label: String, labeltext: String) {
+fun AddressRow(icon: Int, label: String, labeltext: String): String {
     var city by rememberSaveable { mutableStateOf("") }
     Row {
-        Box(modifier = Modifier
-            .clip(shape = RoundedCornerShape(30.dp))
-            .background(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.1f))
-            .width(40.dp)
-            .height(40.dp)
-            .align(Alignment.Top)
-        )
-        {
+        Box(
+            modifier = Modifier
+                .clip(shape = RoundedCornerShape(30.dp))
+                .background(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.1f))
+                .width(40.dp)
+                .height(40.dp)
+                .align(Alignment.Top)
+        ) {
             Icon(
                 painter = painterResource(id = icon),
-                contentDescription ="Icon",
+                contentDescription = "Icon",
                 tint = MaterialTheme.colorScheme.primary,
-                modifier= Modifier
+                modifier = Modifier
                     .size(20.dp)
                     .align(Alignment.Center)
             )
         }
-        Column (modifier = Modifier.padding(start = 10.dp)){
+        Column(modifier = Modifier.padding(start = 10.dp)) {
             Text(
                 text = label,
-                style=MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.W900),
+                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.W900),
             )
             TextField(
                 value = city,
-                onValueChange = {city=it},
-                label ={ Text(text = labeltext)},
+                onValueChange = { city = it },
+                label = { Text(text = labeltext) },
                 modifier = Modifier
                     .fillMaxWidth(0.95f)
                     .padding(top = 10.dp), // Adjust the width as needed
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
                 )
-
             )
         }
-
     }
+    return city
 }
