@@ -2,6 +2,7 @@ package com.example.home.addnewproperty.ui.Components.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,20 +18,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.home.destinations.AddNewScreen3Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.spec.Direction
-import com.ramcosta.composedestinations.spec.Route
 
 @Composable
 fun ProgressIndicator(
     progressindicator: Float,
     navigator: DestinationsNavigator,
-    destination:Direction,
-    modifier: Modifier=Modifier,
-    flag:Boolean=false
-) {
+    destination: Direction,
+    modifier: Modifier = Modifier,
+    flag: Boolean = false,
+    function: Unit=Unit,
+
+
+    ): String {
+    var id:String= null.toString()
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -58,6 +60,7 @@ fun ProgressIndicator(
                 )
                 .align(Alignment.CenterEnd)
                 .clickable {
+                    function
                     navigator.navigate(destination)
                 }
         ) {
@@ -79,4 +82,5 @@ fun ProgressIndicator(
             )
         }
     }
+    return id
 }

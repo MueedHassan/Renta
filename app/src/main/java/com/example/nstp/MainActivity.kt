@@ -14,15 +14,10 @@ import com.ramcosta.composedestinations.DestinationsNavHost
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         // Make sure to set the mediation provider value to "max" to ensure proper functionality
-            AppLovinSdk.getInstance( this ).setMediationProvider( "max" )
-            AppLovinSdk.getInstance( this ).initializeSdk({ configuration: AppLovinSdkConfiguration ->
-                // AppLovin SDK is initialized, start loading ads
-            })
 
         super.onCreate(savedInstanceState)
         setContent {
             RentaTheme {
-
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -30,7 +25,7 @@ class MainActivity : ComponentActivity() {
                  DestinationsNavHost(navGraph = NavGraphs.root)
                 }
             }
-        }
+
     }
-}
+}}
 

@@ -3,12 +3,9 @@ package com.example.home.addnewproperty.ui.Components.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -19,7 +16,6 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.example.home.R
 import com.example.home.addnewproperty.ui.Components.ui.components.ProgressIndicator
 import com.example.home.addnewproperty.ui.Components.ui.components.TopRoundedButton
-import com.example.home.destinations.AddNewScreen5Destination
 import com.example.home.destinations.AddNewScreen6Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -51,10 +47,13 @@ fun AddNewScreen5(navigator: DestinationsNavigator){
                 label = "Property Description",
                 labeltext ="Provide Complete Descrition of your Property" )
         }
-        ProgressIndicator(progressindicator = 0.6f,
+        ProgressIndicator(
+            progressindicator = 0.6f,
             navigator = navigator,
             destination = AddNewScreen6Destination,
-            modifier = Modifier.align(Alignment.BottomStart))
+            modifier = Modifier.align(Alignment.BottomStart),
+//            function = vm.AddDataScreen1(data),
+        )
     }
 
 
