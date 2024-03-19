@@ -83,6 +83,7 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2024.02.01"))
     implementation(platform("androidx.compose:compose-bom:2024.02.01"))
     implementation(platform("androidx.compose:compose-bom:2024.02.01"))
+    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -139,5 +140,11 @@ dependencies {
     // Declare the dependency for the Cloud Firestore library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-firestore")
+    implementation(platform("io.insert-koin:koin-bom:3.6.0-wasm-alpha2"))
+    implementation("io.insert-koin:koin-core")
+    implementation ("io.insert-koin:koin-android")
+    implementation ("io.insert-koin:koin-androidx-compose:3.5.0")
+    implementation ("androidx.activity:activity-ktx:1.8.2")
+
 
 }

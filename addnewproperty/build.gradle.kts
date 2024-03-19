@@ -3,9 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id ("com.google.devtools.ksp")version "1.9.22-1.0.16"
     id("kotlin-kapt")
-
 }
-
 kotlin {
     sourceSets {
         debug {
@@ -95,5 +93,10 @@ dependencies {
     //Destination Rama
     implementation("io.github.raamcosta.compose-destinations:core:1.9.63")
     ksp("io.github.raamcosta.compose-destinations:ksp:1.9.63")
+    implementation(platform("io.insert-koin:koin-bom:3.6.0-wasm-alpha2"))
+    implementation("io.insert-koin:koin-core")
+    implementation ("io.insert-koin:koin-android")
+    implementation ("io.insert-koin:koin-androidx-compose:3.5.0")
+
 
 }

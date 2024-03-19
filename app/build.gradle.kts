@@ -39,7 +39,6 @@ android {
             useSupportLibrary = true
         }
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -111,12 +110,15 @@ dependencies {
     //APPLovin
     implementation("com.applovin:applovin-sdk:12.3.0")
 
-    implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
+    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-firestore")
 
-
-
+    implementation(platform("io.insert-koin:koin-bom:3.6.0-wasm-alpha2"))
+    implementation("io.insert-koin:koin-core")
+    implementation ("io.insert-koin:koin-android")
+    implementation ("io.insert-koin:koin-androidx-compose:3.5.0")
+    implementation ("androidx.activity:activity-ktx:1.8.2")
 }
 /*
 repositories {

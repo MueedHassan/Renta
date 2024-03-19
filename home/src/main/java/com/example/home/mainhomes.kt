@@ -1,5 +1,5 @@
 package com.example.home
-
+//import com.example.home.destinations.AddNewPropertyDestination
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -50,8 +50,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -64,8 +66,11 @@ import androidx.wear.compose.material.FractionalThreshold
 import androidx.wear.compose.material.rememberSwipeableState
 import androidx.wear.compose.material.swipeable
 import com.example.home.destinations.AddNewPropertyDestination
+import com.example.home.destinations.BookAppointmentScreenDestination
+import com.example.home.destinations.ChatScreenDestination
+import com.example.home.destinations.FavouritesScreenDestination
+import com.example.home.destinations.MainhomeDestination
 import com.example.home.entities.Constants
-import com.example.home.tenants.frontend.NavHostContainer
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.CoroutineScope
@@ -76,7 +81,8 @@ import kotlin.math.roundToInt
 @Composable
 fun Mainhome(
     navigator: DestinationsNavigator
-) {
+) { 
+    
     var statelazy = rememberLazyListState()
     val navController = rememberNavController()
     var offset by remember { mutableStateOf(0f) }
@@ -86,8 +92,7 @@ fun Mainhome(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet (modifier=Modifier.fillMaxWidth(0.7f)){
-                Text("Renta", modifier = Modifier.padding(16.dp))
-                Divider()
+                Text("Renta", modifier = Modifier.padding(top=20.dp,start=16.dp))
                 Button(
                     onClick = { /*TODO*/ },
                     colors=buttonColors(
@@ -108,7 +113,6 @@ fun Mainhome(
                         style=MaterialTheme.typography.bodyLarge
                     )
                 }
-                Divider()
                 NavigationDrawerItem(
                     label = { Text(text ="Add New Property") },
                     selected = false,
@@ -121,7 +125,6 @@ fun Mainhome(
         },
     ){
         Scaffold(
-
             modifier = Modifier
                 .fillMaxSize(),
             topBar = {
@@ -137,12 +140,57 @@ fun Mainhome(
             },
 
             bottomBar ={
+                Box (modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .shadow(
+                        0.5.dp,
+                        shape = RectangleShape,
+                        ambientColor = MaterialTheme.colorScheme.primary,
+                        spotColor = MaterialTheme.colorScheme.outline
+                    )
+                    .border(
+                        0.5.dp,
+                        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
+                    )
+
+                ){
+                    Row (
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 20.dp, end = 20.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+
+                    ){
+                        BottomColumn(icon=R.drawable.icons8_home,
+                            text="Home",
+                            modifier=Modifier.clickable {
+                                navigator.navigate(MainhomeDestination)
+                            }
+                        )
+                        BottomColumn(icon=R.drawable.favourite, text="Favourites", modifier = Modifier.clickable {
+                            navigator.navigate(FavouritesScreenDestination)
+                        })
+                        BottomColumn(
+                            icon=R.drawable.icons8_appointment_80,
+                            text="Appointment",
+                            modifier = Modifier.clickable {
+                                navigator.navigate(BookAppointmentScreenDestination)
+                            })
+                        BottomColumn(icon=R.drawable.icons8_chat_32, text="Chat", modifier = Modifier.clickable {
+                            navigator.navigate(ChatScreenDestination)
+                        })
+
+                    }
+                }
                 BottomNavigationBar(navController = navController)
 
             },
         ) { values ->
             offset= statelazy.firstVisibleItemIndex.toFloat()
-            NavHostContainer(navController = navController, padding = values)
+//            NavHostContainer(navController = navController, padding = values)
             val imageslist= listOf(
                 R.drawable.home1,
                 R.drawable.home3,
@@ -172,7 +220,7 @@ fun Mainhome(
                     Box (
                         modifier = Modifier
                             .padding(10.dp)
-                            .clip(shape= RoundedCornerShape(15.dp))
+                            .clip(shape = RoundedCornerShape(15.dp))
                             .fillParentMaxWidth(0.9f)
                     ){
                         Image(
@@ -180,7 +228,7 @@ fun Mainhome(
                             , contentDescription =null,
                             modifier = Modifier
                                 .padding(10.dp)
-                                .clip(shape= RoundedCornerShape(15.dp))
+                                .clip(shape = RoundedCornerShape(15.dp))
                                 .fillParentMaxWidth()
                                 .height(200.dp)
                                 .align(Alignment.TopCenter)
@@ -192,7 +240,8 @@ fun Mainhome(
                             modifier = Modifier
                                 .padding(
                                     start = 40.dp,
-                                    bottom = 35.dp)
+                                    bottom = 35.dp
+                                )
                                 .align(Alignment.BottomStart)
 
                             )
@@ -203,7 +252,8 @@ fun Mainhome(
                             modifier = Modifier
                                 .padding(
                                     start = 40.dp,
-                                    bottom = 10.dp)
+                                    bottom = 10.dp
+                                )
                                 .align(Alignment.BottomStart)
 
                         )
@@ -424,12 +474,10 @@ fun BottomNavigationBar(navController: NavHostController) {
                 ambientColor = MaterialTheme.colorScheme.primary,
                 spotColor = MaterialTheme.colorScheme.inversePrimary,
                 shape = RoundedCornerShape(1.dp),
-
-                )
+            )
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
-
         Constants.BottomNavItems.forEach { navItem ->
             BottomNavigationItem(
                 selectedContentColor = MaterialTheme.colorScheme.outline,
@@ -481,5 +529,30 @@ fun NavigationDrawer(){
             }
         }
     ){
+    }
+}
+
+@Composable
+fun BottomColumn(icon: Int, text: String, modifier: Modifier){
+    Column(
+        modifier=Modifier.then(modifier)
+    ) {
+        Icon(
+            painter = painterResource(id =icon),
+            contentDescription = "Line",
+            modifier= Modifier
+                .size(30.dp)
+                .align(Alignment.CenterHorizontally)
+            ,
+            tint = MaterialTheme.colorScheme.primary
+        )
+        Text(
+            modifier=Modifier,
+            text = text,
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.bodySmall,
+            textAlign = TextAlign.Center,
+        )
+
     }
 }

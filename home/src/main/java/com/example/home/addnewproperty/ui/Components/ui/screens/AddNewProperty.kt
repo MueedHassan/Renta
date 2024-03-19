@@ -12,23 +12,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.home.addnewproperty.ui.Components.ui.components.AddNewListing
 import com.example.home.addnewproperty.ui.Components.ui.components.ExitButton
-import com.example.home.addnewproperty.ui.Components.ui.vm.AddNewPropertyVm
-import com.example.home.destinations.AddNewScreen1Destination
+import com.example.home.destinations.AddNewScreen2Destination
 import com.example.home.destinations.MainhomeDestination
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-
-
 @Destination
 @Composable
-fun AddNewProperty(navigator: DestinationsNavigator,
-                   vm: AddNewPropertyVm= viewModel()
-){
+fun AddNewProperty(navigator: DestinationsNavigator){
     Column(
     modifier=Modifier.padding(20.dp)
 )
@@ -55,7 +47,7 @@ fun AddNewProperty(navigator: DestinationsNavigator,
         navigator = navigator,
         modifier=Modifier
             .clickable {
-                navigator.navigate(AddNewScreen1Destination)
+                navigator.navigate(AddNewScreen2Destination)
             }
     )
     AddNewListing(
@@ -64,8 +56,7 @@ fun AddNewProperty(navigator: DestinationsNavigator,
         navigator = navigator,
         modifier = Modifier
             .clickable{
-
-                navigator.navigate(AddNewScreen1Destination)
+                navigator.navigate(AddNewScreen2Destination)
             }
     )
 }

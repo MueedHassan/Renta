@@ -27,8 +27,8 @@ object Constants {
         ),
         BottomNavItem(
             label = "Chat",
-        icon =R.drawable.icons8_chat_32,
-        route = "bookappointmentscreen"
+            icon =R.drawable.icons8_chat_32,
+            route = "bookappointmentscreen"
     )
     )
 }

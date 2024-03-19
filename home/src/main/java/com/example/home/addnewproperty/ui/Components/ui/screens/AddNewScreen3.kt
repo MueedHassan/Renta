@@ -1,5 +1,4 @@
 package com.example.home.addnewproperty.ui.Components.ui.screens
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -33,37 +32,34 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.home.R
-import com.example.home.addnewproperty.ui.Components.ui.components.ProgressIndicator
 import com.example.home.addnewproperty.ui.Components.ui.components.TopRoundedButton
-import com.example.home.addnewproperty.ui.Components.ui.vm.AddNewPropertyVm
-import com.example.home.destinations.AddNewScreen3Destination
+import com.example.home.addnewproperty.ui.Components.ui.vm.AddNewPropertyViewModel
 import com.example.home.destinations.AddNewScreen4Destination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 @Destination
-fun AddNewScreen3(navigator: DestinationsNavigator,
-                  vm: AddNewPropertyVm = viewModel()) {
+fun AddNewScreen3(navigator: DestinationsNavigator){
     var dataupdated by rememberSaveable { mutableStateOf(hashMapOf<String, Any?>()) }
     var city by rememberSaveable { mutableStateOf("") }
     var area by rememberSaveable { mutableStateOf("") }
     var price by rememberSaveable { mutableStateOf("") }
     var location by rememberSaveable { mutableStateOf("") }
-
-    LaunchedEffect(vm.documentId) {
-        // Introduce a delay to allow time for the documentId to be set
-        delay(1000) // You can adjust the delay as needed
-
-        if (vm.documentId == null) {
-            // Document ID is available, you can use it
-            println("Document ID in AddNewScreen3: ${vm.documentId}")
-        }
-    }
+    val addNewPropertyViewModel: AddNewPropertyViewModel = koinViewModel<AddNewPropertyViewModel>()
+    var id:String?=null
+    var showLaunchedEffect by rememberSaveable { mutableStateOf(false) }
+    val data :HashMap<String,Any?> = hashMapOf(
+        "City" to city,
+        "Location" to location,
+        "Area" to area,
+        "Price" to price
+    )
 
     Box(
         modifier = Modifier
@@ -127,9 +123,13 @@ fun AddNewScreen3(navigator: DestinationsNavigator,
                     .background(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
             )
         }
-
+        val data :HashMap<String,Any?> = hashMapOf(
+            "City" to city,
+            "Location" to location,
+            "Area" to area,
+            "Price" to price
+        )
             var progressindicator = 0.2f
-            var destination = AddNewScreen4Destination
             var modifier = Modifier.align(Alignment.BottomStart)
             var flag=false
 
@@ -160,18 +160,14 @@ fun AddNewScreen3(navigator: DestinationsNavigator,
                         )
                         .align(Alignment.CenterEnd)
                         .clickable {
-                            vm.viewModelScope.launch{
-                                vm.updateDataForDocumentId( hashMapOf(
-                                    "City" to city,
-                                    "Area" to area,
-                                    "Price" to price,
-                                    "Location" to location
-                                ))
+                            addNewPropertyViewModel.viewModelScope.launch {
+                                addNewPropertyViewModel.UpdateDoc(data,
+                                    addNewPropertyViewModel.getRecentId())
                             }
-
-                            navigator.navigate(destination)
+                            navigator.navigate(AddNewScreen4Destination)
                         }
-                ) {
+                )
+                {
                     val value:String
                     if(flag==true)
                     {
@@ -188,15 +184,9 @@ fun AddNewScreen3(navigator: DestinationsNavigator,
                         modifier = Modifier
                             .align(Alignment.Center)
                     )
-                }
+                }}
             }
-
-
-        }
-
-
 }
-
 @Composable
 fun AddressRow(icon: Int, label: String, labeltext: String): String {
     var city by rememberSaveable { mutableStateOf("") }
@@ -238,3 +228,4 @@ fun AddressRow(icon: Int, label: String, labeltext: String): String {
     }
     return city
 }
+

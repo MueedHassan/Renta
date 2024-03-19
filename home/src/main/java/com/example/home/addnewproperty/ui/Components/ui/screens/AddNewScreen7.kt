@@ -31,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,17 +42,44 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
 import com.example.home.R
 import com.example.home.addnewproperty.ui.Components.ui.components.ProgressIndicator
 import com.example.home.addnewproperty.ui.Components.ui.components.TopRoundedButton
+import com.example.home.addnewproperty.ui.Components.ui.vm.AddNewPropertyViewModel
 import com.example.home.destinations.MainhomeDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @Destination
 @Composable
 fun AddnewScrren7(navigator: DestinationsNavigator){
     val rentaltype= listOf("Long Term Rental","Short Term Rental","Only Family ","All Boys","All Girls")
+    var selectedstatus by rememberSaveable {
+        mutableStateOf("")
+    }
+   var maxpeople by rememberSaveable {
+       mutableStateOf(" ")
+   }
+    var propertystatus by rememberSaveable {
+        mutableStateOf(" ")
+    }
+    var phonenumber by rememberSaveable {
+        mutableStateOf(" ")
+    }
+    var email by rememberSaveable {
+        mutableStateOf(" ")
+    }
+    var data :HashMap<String,Any?> = hashMapOf(
+        "Max Occupancy" to maxpeople,
+        "Property Status" to propertystatus,
+        "phone Number"  to phonenumber,
+        "Email" to email,
+    )
+    val addNewPropertyViewModel: AddNewPropertyViewModel = koinViewModel<AddNewPropertyViewModel>()
+
 
     Box (modifier = Modifier
         .padding(top = 10.dp, start = 10.dp, end = 10.dp)
@@ -74,7 +102,7 @@ fun AddnewScrren7(navigator: DestinationsNavigator){
             Spacer(
                 modifier = Modifier.height(40.dp)
             )
-            AddressRow(icon = R.drawable.person,
+           maxpeople= AddressRow(icon = R.drawable.person,
                 label ="Enter Maximun number of Person Allowed\"" ,
                 labeltext ="Maximum Occupancy"
             )
@@ -112,20 +140,21 @@ fun AddnewScrren7(navigator: DestinationsNavigator){
 
                     ) {
                         items(rentaltype.size){item->
-                           WashroomBathroomButton(text = rentaltype[item])
-
+                             WashroomBathroomButton(
+                                 text = rentaltype[item],
+                                 isSelected = selectedstatus==rentaltype[item],
+                                 onSelected = {
+                                     selected->
+                                     selectedstatus=rentaltype[item]
+                                 }
+                             )
                         }
-                        
                     }
-                
-
                 }
-
             }
-            PhoneNumberInputWithCountryDropdown()
-            AddressRow(icon = R.drawable.size, label = "Email", labeltext ="@yahoo.com")
-            
-
+           phonenumber= PhoneNumberInputWithCountryDropdown()
+            email=AddressRow(icon = R.drawable.size, label = "Email", labeltext ="@yahoo.com")
+            propertystatus=selectedstatus
         }
         ProgressIndicator(
             progressindicator = 1f,
@@ -133,14 +162,19 @@ fun AddnewScrren7(navigator: DestinationsNavigator){
             destination = MainhomeDestination,
             modifier = Modifier.align(Alignment.BottomStart),
             flag =true,
-//            function = vm.AddDataScreen1(data),
+            buttonmodifier = Modifier.clickable {
+                addNewPropertyViewModel.viewModelScope.launch {
+                    addNewPropertyViewModel.UpdateDoc(data,addNewPropertyViewModel.getRecentId())
+                }
+                navigator.navigate(MainhomeDestination)
+            }
         )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PhoneNumberInputWithCountryDropdown() {
+fun PhoneNumberInputWithCountryDropdown(): String {
     var phoneNumber by remember { mutableStateOf("") }
     var selectedCountry by remember { mutableStateOf("US(966)") }
     var isDropdownExpanded by remember { mutableStateOf(false) }
@@ -203,7 +237,6 @@ fun PhoneNumberInputWithCountryDropdown() {
                                 .align(Alignment.CenterEnd)
 
                         )
-
                 }
 
                 TextField(
@@ -244,4 +277,5 @@ fun PhoneNumberInputWithCountryDropdown() {
             }
         }
     }
+    return selectedCountry+phoneNumber
 }
