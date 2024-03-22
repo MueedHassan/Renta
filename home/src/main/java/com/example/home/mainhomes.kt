@@ -1,5 +1,4 @@
 package com.example.home
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -17,7 +16,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
@@ -29,7 +27,6 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -51,6 +48,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -63,20 +61,19 @@ import androidx.wear.compose.material.FractionalThreshold
 import androidx.wear.compose.material.rememberSwipeableState
 import androidx.wear.compose.material.swipeable
 import com.example.home.destinations.AddNewPropertyDestination
+import com.example.home.destinations.LandlordHomeDestination
 import com.example.home.entities.Constants
-import com.example.home.tenants.frontend.NavHostContainer
+import com.example.home.tenants.module.NavHostContainer
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
-@Destination(start=true)
+@Destination
 @Composable
 fun Mainhome(
     navigator: DestinationsNavigator
-) {
-    var statelazy = rememberLazyListState()
+) { var statelazy = rememberLazyListState()
     val navController = rememberNavController()
     var offset by remember { mutableStateOf(0f) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -85,10 +82,9 @@ fun Mainhome(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet (modifier=Modifier.fillMaxWidth(0.7f)){
-                Text("Renta", modifier = Modifier.padding(16.dp))
-                Divider()
+                Text("Renta", modifier = Modifier.padding(top=20.dp,start=16.dp))
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { navigator.navigate(LandlordHomeDestination) },
                     colors=buttonColors(
                         backgroundColor = MaterialTheme.colorScheme.primary,
                         contentColor =MaterialTheme.colorScheme.inverseOnSurface
@@ -98,63 +94,46 @@ fun Mainhome(
                         .clip(shape = RoundedCornerShape(1.dp))
                         .height(40.dp)
                         .fillMaxWidth(0.80f)
-                        .align(Alignment.CenterHorizontally),
-
-
-                ){
+                        .align(Alignment.CenterHorizontally)
+                        .clickable { navigator.apply {
+                            popBackStack()
+                            navigate(LandlordHomeDestination)
+                        }
+                        }
+                    ,
+                    ){
                     Text(
                         text =" Switch To Host/Landlord",
                         style=MaterialTheme.typography.bodyLarge
+
                     )
                 }
-                Divider()
                 NavigationDrawerItem(
                     label = { Text(text ="Add New Property") },
                     selected = false,
                     onClick = {
-                       navigator.navigate(
-              AddNewPropertyDestination(),false
-                  )
-                              /*TODO*/},
+                        navigator.navigate(
+                            AddNewPropertyDestination(),false
+                        )
+                        /*TODO*/},
                 ) }
         },
-    ){
-    Scaffold(
-
-        modifier = Modifier
-            .fillMaxSize(),
-        topBar = {
-            if(offset.toInt() ==0)
-            {
-                AppBarExpendable(drawerstate=drawerState,scope=scope)
-            }
-            else
-            {
-                AppBarShrinked()
-
-            }
-        },
-
-      bottomBar ={
-          BottomNavigationBar(navController = navController)
-
-      },
-    ) { values ->
-        offset= statelazy.firstVisibleItemIndex.toFloat()
-        NavHostContainer(navController = navController, padding = values)
-        LazyColumn(
-            state = statelazy,
+    ){ Scaffold(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(values)
-        ) {
-            items(100) {
-                Text(
-                    text = "Item$it",
-                    modifier = Modifier.padding(values)
+                .fillMaxSize(),
+
+            bottomBar ={
+                BottomNavigationBar(navController = navController)
+
+            },
+        ) { values ->
+            offset= statelazy.firstVisibleItemIndex.toFloat()
+            NavHostContainer(
+                navController = navController,
+                padding = values,
+                navigator=navigator
                 )
-            }
-        }
+//
         }
     }}
 @Composable
@@ -368,15 +347,13 @@ fun BottomNavigationBar(navController: NavHostController) {
                 ambientColor = MaterialTheme.colorScheme.primary,
                 spotColor = MaterialTheme.colorScheme.inversePrimary,
                 shape = RoundedCornerShape(1.dp),
-
-                )
+            )
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
-
         Constants.BottomNavItems.forEach { navItem ->
             BottomNavigationItem(
-               selectedContentColor = MaterialTheme.colorScheme.outline,
+                selectedContentColor = MaterialTheme.colorScheme.outline,
                 selected = currentRoute == navItem.route,
                 onClick = {
                     navController.navigate(navItem.route)
@@ -395,7 +372,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                 },
                 label = {
                     Text(text = navItem.label,
-                    color=MaterialTheme.colorScheme.primary,
+                        color=MaterialTheme.colorScheme.primary,
                         style=MaterialTheme.typography.bodySmall
                     )
                 },
@@ -425,5 +402,29 @@ fun NavigationDrawer(){
             }
         }
     ){
+    }
+}
+@Composable
+fun BottomColumn(icon: Int, text: String, modifier: Modifier){
+    Column(
+        modifier=Modifier.then(modifier)
+    ) {
+        Icon(
+            painter = painterResource(id =icon),
+            contentDescription = "Line",
+            modifier= Modifier
+                .size(30.dp)
+                .align(Alignment.CenterHorizontally)
+            ,
+            tint = MaterialTheme.colorScheme.primary
+        )
+        Text(
+            modifier=Modifier,
+            text = text,
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.bodySmall,
+            textAlign = TextAlign.Center,
+        )
+
     }
 }

@@ -8,27 +8,27 @@
             android:label="@string/title_activity_nav_graph"
             android:theme="@style/Theme.Nstp" />
         <activity
-            android:name=".tenants.frontend.ui.theme.BottomNavigationBar"
+            android:name=".tenants.module.ui.theme.BottomNavigationBar"
             android:exported="false"
             android:label="@string/title_activity_bottom_navigation_bar"
             android:theme="@style/Theme.Nstp" />
         <activity
-            android:name=".tenants.frontend.BottomNavGraph"
+            android:name=".tenants.module.BottomNavGraph"
             android:exported="false"
             android:label="@string/title_activity_bottom_nav_graph"
             android:theme="@style/Theme.Nstp" />
         <activity
-            android:name=".tenants.frontend.BookAppointment"
+            android:name=".tenants.module.BookAppointment"
             android:exported="false"
             android:label="@string/title_activity_book_appointment"
             android:theme="@style/Theme.Nstp" />
         <activity
-            android:name=".tenants.frontend.Favourites"
+            android:name=".tenants.module.Favourites"
             android:exported="false"
             android:label="@string/title_activity_favourites"
             android:theme="@style/Theme.Nstp" />
         <activity
-            android:name=".tenants.frontend.HomeTenants"
+            android:name=".tenants.module.HomeTenants"
             android:exported="false"
             android:label="@string/title_activity_home_tenants"
             android:theme="@style/Theme.Nstp" />

@@ -3,9 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id ("com.google.devtools.ksp")version "1.9.22-1.0.16"
     id("kotlin-kapt")
-
 }
-
 kotlin {
     sourceSets {
         debug {
@@ -61,7 +59,6 @@ android {
 }
 
 dependencies {
-
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
@@ -80,7 +77,6 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-
     // Optional - Included automatically by material, only add when you need
     // the icons but not the material library (e.g. when using Material3 or a
     // custom design system based on Foundation)
@@ -95,5 +91,10 @@ dependencies {
     //Destination Rama
     implementation("io.github.raamcosta.compose-destinations:core:1.9.63")
     ksp("io.github.raamcosta.compose-destinations:ksp:1.9.63")
+    implementation(platform("io.insert-koin:koin-bom:3.6.0-wasm-alpha2"))
+    implementation("io.insert-koin:koin-core")
+    implementation ("io.insert-koin:koin-android")
+    implementation ("io.insert-koin:koin-androidx-compose:3.5.0")
+
 
 }

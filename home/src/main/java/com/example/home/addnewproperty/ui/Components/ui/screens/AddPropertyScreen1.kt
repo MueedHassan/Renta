@@ -1,5 +1,4 @@
 package com.example.home.addnewproperty.ui.Components.ui.screens
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -28,9 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.example.home.destinations.AddNewScreen2Destination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-
 @Destination
-
 @Composable
 fun AddNewScreen1(
     navigator: DestinationsNavigator
