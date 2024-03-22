@@ -100,7 +100,6 @@ dependencies {
     //Destination Rama
     implementation("io.github.raamcosta.compose-destinations:core:1.9.63")
     ksp("io.github.raamcosta.compose-destinations:ksp:1.9.63")
-
     // Optional - Integration with activities
     implementation("androidx.activity:activity-compose:1.8.2")
     // Optional - Integration with ViewModels
@@ -109,7 +108,6 @@ dependencies {
     implementation(project(":addnewproperty"))
     //APPLovin
     implementation("com.applovin:applovin-sdk:12.3.0")
-
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-firestore")

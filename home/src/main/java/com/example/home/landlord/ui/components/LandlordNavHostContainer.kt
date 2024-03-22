@@ -1,5 +1,4 @@
-package com.example.home.tenants.module
-
+package com.example.home.landlord.ui.components
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -9,14 +8,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.home.tenants.module.ui.BookAppointmentScreen
 import com.example.home.tenants.module.ui.FavouritesScreen
-import com.example.home.tenants.module.ui.TenantHome
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
-fun NavHostContainer(
+fun LandLordNavHostContainer(
     navController: NavHostController,
-    padding: PaddingValues,
-    navigator: DestinationsNavigator,
+    padding: PaddingValues
 ) {
     NavHost(
         navController = navController,
@@ -24,8 +20,7 @@ fun NavHostContainer(
         modifier = Modifier.padding(paddingValues = padding),
         builder = {
             composable("home") {
-               TenantHome(navigator=navigator)
-               return@composable
+//                FavouritesScreen()
             }
             composable("favourites") {
                 FavouritesScreen()
