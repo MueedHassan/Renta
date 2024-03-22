@@ -1,4 +1,5 @@
-package com.example.home
+package com.example.home.landlord.ui
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
@@ -46,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -60,18 +63,22 @@ import androidx.wear.compose.material.ExperimentalWearMaterialApi
 import androidx.wear.compose.material.FractionalThreshold
 import androidx.wear.compose.material.rememberSwipeableState
 import androidx.wear.compose.material.swipeable
+import com.example.home.R
 import com.example.home.destinations.AddNewPropertyDestination
-import com.example.home.destinations.LandlordHomeDestination
+import com.example.home.destinations.MainhomeDestination
 import com.example.home.entities.Constants
+import com.example.home.landlord.ui.components.LandLordConstants
+import com.example.home.landlord.ui.components.LandLordNavHostContainer
 import com.example.home.tenants.module.NavHostContainer
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+
 @Destination
 @Composable
-fun Mainhome(
+fun LandlordHome(
     navigator: DestinationsNavigator
 ) { var statelazy = rememberLazyListState()
     val navController = rememberNavController()
@@ -84,7 +91,7 @@ fun Mainhome(
             ModalDrawerSheet (modifier=Modifier.fillMaxWidth(0.7f)){
                 Text("Renta", modifier = Modifier.padding(top=20.dp,start=16.dp))
                 Button(
-                    onClick = { navigator.navigate(LandlordHomeDestination) },
+                    onClick = { navigator.navigate(MainhomeDestination) },
                     colors=buttonColors(
                         backgroundColor = MaterialTheme.colorScheme.primary,
                         contentColor =MaterialTheme.colorScheme.inverseOnSurface
@@ -94,18 +101,11 @@ fun Mainhome(
                         .clip(shape = RoundedCornerShape(1.dp))
                         .height(40.dp)
                         .fillMaxWidth(0.80f)
-                        .align(Alignment.CenterHorizontally)
-                        .clickable { navigator.apply {
-                            popBackStack()
-                            navigate(LandlordHomeDestination)
-                        }
-                        }
-                    ,
-                    ){
+                        .align(Alignment.CenterHorizontally),
+                ){
                     Text(
-                        text =" Switch To Host/Landlord",
+                        text =" Switch To Tenants/Host",
                         style=MaterialTheme.typography.bodyLarge
-
                     )
                 }
                 NavigationDrawerItem(
@@ -119,22 +119,92 @@ fun Mainhome(
                 ) }
         },
     ){ Scaffold(
+        modifier = Modifier
+            .fillMaxSize(),
+        topBar = {
+            if(offset.toInt() ==0)
+            { AppBarExpendable(drawerstate=drawerState,scope=scope)
+            }
+            else
+            { AppBarShrinked()
+            }
+        },
+        bottomBar ={
+            LandLordBottomNavigationBar(navController = navController)
+        },
+    ) { values ->
+        offset= statelazy.firstVisibleItemIndex.toFloat()
+        LandLordNavHostContainer(
+            navController = navController,
+            padding = values,
+        )
+        val imageslist= listOf(
+            R.drawable.home1,
+            R.drawable.home3,
+            R.drawable.home4,
+            R.drawable.home6,
+        )
+        val imagetextlist= listOf(
+            "Villa",
+            "Bungalow",
+            "Studio Apartment",
+            "Shared Room",
+            "Home",
+            "Flat"
+        )
+        val imagepricelist= listOf(
+            "$85","$65",
+            "$15","$895",
+            "$850","$650")
+        LazyColumn(
+            state = statelazy,
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(values)
+        ) { items(imageslist.size) {
+                Box (
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .clip(shape = RoundedCornerShape(15.dp))
+                        .fillParentMaxWidth(0.9f)
+                ){
+                    Image(
+                        painter = painterResource(id = imageslist[it])
+                        , contentDescription =null,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .clip(shape = RoundedCornerShape(15.dp))
+                            .fillParentMaxWidth()
+                            .height(200.dp)
+                            .align(Alignment.TopCenter)
+                    )
+                    Text(
+                        text = imagetextlist[it],
+                        style = MaterialTheme.typography.headlineMedium.copy(),
+                        color = Color.Black,
+                        modifier = Modifier
+                            .padding(
+                                start = 40.dp,
+                                bottom = 35.dp
+                            )
+                            .align(Alignment.BottomStart)
+                    )
+                    Text(
+                        text = imagepricelist[it],
+                        style = MaterialTheme.typography.headlineSmall.copy(),
+                        color = Color.Black,
+                        modifier = Modifier
+                            .padding(
+                                start = 40.dp,
+                                bottom = 10.dp
+                            )
+                            .align(Alignment.BottomStart)
+                    )
+                }
 
-            bottomBar ={
-                BottomNavigationBar(navController = navController)
-
-            },
-        ) { values ->
-            offset= statelazy.firstVisibleItemIndex.toFloat()
-            NavHostContainer(
-                navController = navController,
-                padding = values,
-                navigator=navigator
-                )
-//
+            }
         }
+    }
     }}
 @Composable
 fun AppBarShrinked() {
@@ -332,8 +402,7 @@ private fun Swipeable() {
     }
 }
 @Composable
-fun BottomNavigationBar(navController: NavHostController) {
-
+fun LandLordBottomNavigationBar(navController: NavHostController) {
     BottomNavigation(
         backgroundColor = MaterialTheme.colorScheme.background,
         contentColor = MaterialTheme.colorScheme.primary,
@@ -351,7 +420,7 @@ fun BottomNavigationBar(navController: NavHostController) {
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
-        Constants.BottomNavItems.forEach { navItem ->
+        LandLordConstants.LandLordBottomNavItems.forEach {navItem->
             BottomNavigationItem(
                 selectedContentColor = MaterialTheme.colorScheme.outline,
                 selected = currentRoute == navItem.route,

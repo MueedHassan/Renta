@@ -5,6 +5,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,13 +35,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
 import coil.compose.AsyncImage
 import com.example.home.R
 import com.example.home.addnewproperty.ui.Components.ui.components.ProgressIndicator
 import com.example.home.addnewproperty.ui.Components.ui.components.TopRoundedButton
+import com.example.home.addnewproperty.ui.Components.ui.vm.AddNewPropertyViewModel
 import com.example.home.destinations.AddnewScrren7Destination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 
 @Destination
@@ -49,6 +54,7 @@ fun AddNewScreen6(navigator: DestinationsNavigator) {
     var selectedImageUris by remember {
         mutableStateOf<List<Uri>>(emptyList())
     }
+    val addNewPropertyViewModel: AddNewPropertyViewModel = koinViewModel<AddNewPropertyViewModel>()
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
         onResult = { uris -> selectedImageUris = uris.take(6)
@@ -167,7 +173,17 @@ fun AddNewScreen6(navigator: DestinationsNavigator) {
             navigator = navigator,
             destination = AddnewScrren7Destination,
             modifier = Modifier.align(Alignment.BottomStart),
-//            function = vm.AddDataScreen1(data),
+            buttonmodifier = Modifier.
+            clickable {
+                addNewPropertyViewModel.viewModelScope.launch {
+                    val imageuris=addNewPropertyViewModel.uploadImagesAndSaveUrls(selectedImageUris)
+                    val data:HashMap<String,Any?> = hashMapOf(
+                        "List Of Images Uris" to imageuris
+                    )
+                    addNewPropertyViewModel.UpdateDoc(data,addNewPropertyViewModel.getRecentId())
+                }
+                navigator.navigate(AddnewScrren7Destination)
+            }
         )
     }
 

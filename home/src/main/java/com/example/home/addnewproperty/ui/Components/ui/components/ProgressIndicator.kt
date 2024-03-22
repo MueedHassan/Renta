@@ -29,6 +29,7 @@ fun ProgressIndicator(
     modifier: Modifier = Modifier,
     flag: Boolean = false,
     function: Unit=Unit,
+    buttonmodifier:Modifier=Modifier
 
 
     ): String {
@@ -59,10 +60,7 @@ fun ProgressIndicator(
                     color = MaterialTheme.colorScheme.primary
                 )
                 .align(Alignment.CenterEnd)
-                .clickable {
-                    function
-                    navigator.navigate(destination)
-                }
+                .then(buttonmodifier)
         ) {
             val value:String
             if(flag==true)

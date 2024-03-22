@@ -33,21 +33,22 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.home.addnewproperty.ui.Components.ui.components.TopRoundedButton
-import com.example.home.addnewproperty.ui.Components.ui.vm.AddNewPropertyVm
+import com.example.home.addnewproperty.ui.Components.ui.vm.AddNewPropertyViewModel
 import com.example.home.destinations.AddNewScreen3Destination
+import com.google.firebase.firestore.FieldValue
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 @Destination
-fun AddNewScreen2( navigator: DestinationsNavigator,
-                   vm: AddNewPropertyVm = viewModel()
-                   )
-{   var selectedType by remember { mutableStateOf<String?>(null) }
-    var db=vm.db
+fun AddNewScreen2(
+    navigator: DestinationsNavigator,
+)
+{ val addNewPropertyViewModel:AddNewPropertyViewModel = koinViewModel<AddNewPropertyViewModel>()
+    var selectedType by remember { mutableStateOf<String?>(null) }
     var homeTypeIcon = listOf(
         Icons.Filled.AddHome
         ,Icons.Filled.AddBusiness,
@@ -107,6 +108,7 @@ fun AddNewScreen2( navigator: DestinationsNavigator,
         }
         val data = hashMapOf(
             "Place Type" to selectedType,
+            "timestamp" to FieldValue.serverTimestamp()
         )
         var progressindicator = 0.2f
         var destination = AddNewScreen3Destination
@@ -140,11 +142,10 @@ fun AddNewScreen2( navigator: DestinationsNavigator,
                         )
                         .align(Alignment.CenterEnd)
                         .clickable {
-                            vm.viewModelScope.launch{
-                                vm.AddDataScreen1(data)
+                            addNewPropertyViewModel.viewModelScope.launch {
+                                addNewPropertyViewModel.addProperty(data)
                             }
-
-                            navigator.navigate(destination)
+                            navigator.navigate(AddNewScreen3Destination)
                         }
                 ) {
                     val value:String
