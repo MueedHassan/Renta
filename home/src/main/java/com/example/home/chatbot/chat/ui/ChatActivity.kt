@@ -1,19 +1,13 @@
 package com.example.home.chatbot.chat.ui
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import androidx.compose.runtime.Composable
+import com.ramcosta.composedestinations.annotation.Destination
+import org.koin.androidx.compose.koinViewModel
+@Destination
+@Composable
+fun ChatActivity(){
+    val viewModel: ChatViewModel = koinViewModel<ChatViewModel>()
 
-class ChatActivity : ComponentActivity() {
-
-    private val viewModel: ChatViewModel by stateViewModel(
-        state = { intent?.extras ?: Bundle() }
-    )
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            ChatGptBotAppTheme {
                 ChatScreen(
                     uiHandlers = ChatScreenUiHandlers(
                         onSendMessage = viewModel::sendMessage,
@@ -22,7 +16,7 @@ class ChatActivity : ComponentActivity() {
                     conversation = viewModel.conversation,
                     isSendingMessage = viewModel.isSendingMessage
                 )
-            }
-        }
-    }
+
+
+
 }

@@ -5,9 +5,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -27,18 +29,21 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import com.example.home.R
@@ -78,7 +83,17 @@ fun ChatScreen(
     }
 
     Scaffold(
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        topBar = { TopAppBar(
+            title = { Text(
+                text = "Your AI Agent",
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.outline,
+                modifier = Modifier.padding(vertical = 10.dp)
+
+            )},
+        )}
+
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -145,46 +160,48 @@ fun MessageList(
     LazyColumn(
         state = listState
     ) {
-        items(messagesList) { message ->
+        items(messagesList.size) { message ->
             Row {
-                if (message.isFromUser) {
+                if (messagesList[message].isFromUser) {
                     HorizontalSpacer(width = 16.dp)
                     Box(
                         modifier = Modifier.weight(weight = 1f)
                     )
                 }
-                Text(
-                    text = message.text,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.inverseSurface,
-                    textAlign = if (message.isFromUser) { TextAlign.End } else { TextAlign.Start },
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(
-                            if (message.messageStatus == MessageStatus.Error) {
-                                MaterialTheme.colorScheme.errorContainer
-                            } else {
-                                if (message.isFromUser) {
-                                    MaterialTheme.colorScheme.secondaryContainer
+                messagesList[message].text?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.inverseSurface,
+                        textAlign = if (messagesList[message].isFromUser) { TextAlign.End } else { TextAlign.Start },
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(
+                                if (messagesList[message].messageStatus == MessageStatus.Error) {
+                                    MaterialTheme.colorScheme.errorContainer
                                 } else {
-                                    MaterialTheme.colorScheme.primaryContainer
+                                    if (messagesList[message].isFromUser) {
+                                        MaterialTheme.colorScheme.secondaryContainer
+                                    } else {
+                                        MaterialTheme.colorScheme.primaryContainer
+                                    }
                                 }
+                            )
+                            .clickable(enabled = messagesList[message].messageStatus == MessageStatus.Error) {
+                                onResendMessage(messagesList[message])
                             }
-                        )
-                        .clickable(enabled = message.messageStatus == MessageStatus.Error) {
-                            onResendMessage(message)
-                        }
-                        .padding(all = 8.dp)
+                            .padding(all = 8.dp)
 
-                )
-                if (!message.isFromUser) {
+                    )
+                }
+                if (!messagesList[message].isFromUser) {
                     HorizontalSpacer(width = 16.dp)
                     Box(
                         modifier = Modifier.weight(weight = 1f)
                     )
                 }
             }
-            if (message.messageStatus == MessageStatus.Sending) {
+            if (messagesList[message].messageStatus == MessageStatus.Sending) {
                 Text(
                     text = stringResource(R.string.chat_message_loading),
                     style = MaterialTheme.typography.bodyMedium,
@@ -192,11 +209,11 @@ fun MessageList(
                 )
                 HorizontalSpacer(width = 32.dp)
             }
-            if (message.messageStatus == MessageStatus.Error) {
+            if (messagesList[message].messageStatus == MessageStatus.Error) {
                 Row(
                     modifier = Modifier
                         .clickable {
-                            onResendMessage(message)
+                            onResendMessage(messagesList[message])
                         }
                 ) {
                     Box(
@@ -213,3 +230,12 @@ fun MessageList(
         }
     }
 }
+
+@Composable
+fun VerticalSpacer(height: Dp) {
+Spacer(modifier = Modifier.height(height))}
+
+@Composable
+fun HorizontalSpacer(width: Dp) {
+    Spacer(modifier = Modifier.width(width))}
+

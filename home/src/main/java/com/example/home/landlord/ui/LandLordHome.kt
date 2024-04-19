@@ -23,12 +23,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChatBubble
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.Dehaze
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -65,6 +67,8 @@ import androidx.wear.compose.material.rememberSwipeableState
 import androidx.wear.compose.material.swipeable
 import com.example.home.R
 import com.example.home.destinations.AddNewPropertyDestination
+import com.example.home.destinations.ChatActivityDestination
+import com.example.home.destinations.ChatScreenDestination
 import com.example.home.destinations.MainhomeDestination
 import com.example.home.entities.Constants
 import com.example.home.landlord.ui.components.LandLordConstants
@@ -132,6 +136,15 @@ fun LandlordHome(
         bottomBar ={
             LandLordBottomNavigationBar(navController = navController)
         },
+        floatingActionButton = {
+            FloatingActionButton(onClick = { navigator.navigate(
+                ChatActivityDestination
+            ) },
+                modifier = Modifier.height(50.dp).width(50.dp)
+            ) {
+                Icon(Icons.Default.ChatBubble, contentDescription = "Add")
+            }
+        }
     ) { values ->
         offset= statelazy.firstVisibleItemIndex.toFloat()
         LandLordNavHostContainer(
