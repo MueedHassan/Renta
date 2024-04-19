@@ -144,6 +144,9 @@ dependencies {
     implementation ("io.insert-koin:koin-android")
     implementation ("io.insert-koin:koin-androidx-compose:3.5.0")
     implementation ("androidx.activity:activity-ktx:1.8.2")
-
+    implementation ("com.aallam.openai:openai-client:3.7.1")
+    implementation ("androidx.compose.runtime:runtime-livedata:1.6.6")
+    implementation("io.ktor:ktor-client-core:2.3.10")
+    implementation("io.ktor:ktor-client-cio:2.3.10")
 
 }

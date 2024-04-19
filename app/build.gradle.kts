@@ -117,6 +117,7 @@ dependencies {
     implementation ("io.insert-koin:koin-android")
     implementation ("io.insert-koin:koin-androidx-compose:3.5.0")
     implementation ("androidx.activity:activity-ktx:1.8.2")
+    implementation ("com.aallam.openai:openai-client:3.7.1")
 }
 /*
 repositories {

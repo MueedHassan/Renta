@@ -3,6 +3,8 @@ package com.example.nstp
 import android.app.Application
 import com.example.home.addnewproperty.ui.Components.ui.di.mainModule
 import com.example.home.addnewproperty.ui.Components.ui.di.myModule
+import com.example.home.chatbot.di.chatModule
+import com.example.home.chatbot.di.networkModule
 import com.google.firebase.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -17,7 +19,7 @@ class App: Application() {
         startKoin {
             androidLogger()
             androidContext(this@App)
-            modules(mainModule, myModule)
+            modules(mainModule, myModule, networkModule, chatModule)
         }
     }
 }
