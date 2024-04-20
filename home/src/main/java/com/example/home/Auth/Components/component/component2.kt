@@ -47,7 +47,7 @@ fun TextField(
     modifier: Modifier=Modifier,
 
 
-    ) {
+    ): String {
     val textState = remember { mutableStateOf("") }
 
     OutlinedTextField(
@@ -66,6 +66,7 @@ fun TextField(
 
             )
     )
+    return textState.value
 }
 @Composable
 fun TextBody(

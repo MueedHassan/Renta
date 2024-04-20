@@ -3,7 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id ("com.google.devtools.ksp")version "1.9.22-1.0.16"
     id("kotlin-kapt")
-//    id("com.google.android.gms:play-services-ads-identifier")
+//  id("com.google.android.gms:play-services-ads-identifier")
 }
 
 
@@ -69,14 +69,14 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:1.13.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.compose.ui:ui-android:1.6.2")
+    implementation("androidx.compose.ui:ui-android:1.6.6")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation(platform("androidx.compose:compose-bom:2024.02.01"))
     implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.wear.compose:compose-material:1.3.0")
+    implementation("androidx.wear.compose:compose-material:1.3.1")
     implementation(platform("androidx.compose:compose-bom:2024.02.01"))
     implementation(platform("androidx.compose:compose-bom:2024.02.01"))
     implementation(platform("androidx.compose:compose-bom:2024.02.01"))
@@ -117,13 +117,13 @@ dependencies {
     implementation("androidx.compose.material3:material3-window-size-class")
 
     // Optional - Integration with activities
-    implementation("androidx.activity:activity-compose:1.8.2")
+    implementation("androidx.activity:activity-compose:1.9.0")
     // Optional - Integration with ViewModels
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     //navigation
     implementation  ("androidx.navigation:navigation-compose:2.7.7")
 
-    implementation("androidx.compose.material:material:1.6.1")
+    implementation("androidx.compose.material:material:1.6.6")
     val nav_version = "2.7.6"
 
     implementation("androidx.navigation:navigation-compose:$nav_version")
@@ -143,10 +143,22 @@ dependencies {
     implementation("io.insert-koin:koin-core")
     implementation ("io.insert-koin:koin-android")
     implementation ("io.insert-koin:koin-androidx-compose:3.5.0")
-    implementation ("androidx.activity:activity-ktx:1.8.2")
+    implementation ("androidx.activity:activity-ktx:1.9.0")
     implementation ("com.aallam.openai:openai-client:3.7.1")
     implementation ("androidx.compose.runtime:runtime-livedata:1.6.6")
     implementation("io.ktor:ktor-client-core:2.3.10")
     implementation("io.ktor:ktor-client-cio:2.3.10")
+// Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
 
+    // Add the dependency for the Firebase Authentication library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-auth")
+    implementation ("com.google.firebase:firebase-core:21.1.1")
+
+    // Also add the dependency for the Google Play services library and specify its version
+    implementation("com.google.android.gms:play-services-auth:21.1.0")
+
+}
+/*
 }
