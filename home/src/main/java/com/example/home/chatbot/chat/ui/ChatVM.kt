@@ -47,7 +47,6 @@ class ChatViewModel(
             )
         }
     }
-
     fun resendMessage(message: Message) {
         viewModelScope.launch {
             resendChatRequestUseCase(
