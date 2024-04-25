@@ -25,6 +25,7 @@ import com.example.home.Auth.Components.component.FirstHeading
 import com.example.home.Auth.Components.component.SecondHeading
 import com.example.home.Auth.Components.component.getheight
 import com.example.home.Auth.Components.component.getwidth
+import com.example.home.destinations.SignInDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -86,11 +87,12 @@ fun SignUpPage(navigator: DestinationsNavigator) {
 
         FilledButtonExample(
             modifier= Modifier
-                .padding(top=10.dp)
+                .padding(top = 10.dp)
                 .width(width = (getwidth() * 0.80).dp)
                 .height(50.dp),
             onClick = {
                viewModel.SignInNewUser(navigator,email, password,income,name)
+                navigator.navigate(SignInDestination)
                       },
             symbols = "Sign Up" )
     }
