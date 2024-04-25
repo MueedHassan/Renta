@@ -12,6 +12,7 @@ import com.applovin.sdk.AppLovinSdkConfiguration
 import com.example.home.NavGraphs
 import com.example.home.addnewproperty.ui.Components.ui.di.mainModule
 import com.example.nstp.components.ui.theme.RentaTheme
+import com.google.firebase.FirebaseApp
 import com.ramcosta.composedestinations.DestinationsNavHost
 import org.koin.compose.KoinContext
 import org.koin.core.context.GlobalContext.startKoin
@@ -23,7 +24,7 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
         // Start Koin
-
+        FirebaseApp.initializeApp(applicationContext)
         setContent {
             KoinContext()
             {

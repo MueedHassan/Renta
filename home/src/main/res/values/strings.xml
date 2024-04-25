@@ -6,4 +6,9 @@
     <string name="title_activity_bottom_nav_graph">BottomNavGraph</string>
     <string name="title_activity_bottom_navigation_bar">BottomNavigationBar</string>
     <string name="title_activity_nav_graph">NavGraph</string>
+    <string name="chat_message_loading" />
+    <string name="chat_message_error" />
+    <string name="web_client_id" >149560507761-hpuou4nr4dsqvugs7tdt9rcfr8om51at.apps.googleusercontent.com</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="terms_conditions"><![CDATA[Term & Condition]]></string>
 </resources>
