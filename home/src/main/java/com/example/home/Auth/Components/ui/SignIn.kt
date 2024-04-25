@@ -37,6 +37,7 @@ import com.example.home.Auth.Components.component.getwidth
 import com.example.home.Auth.Components.repo.GoogleAuthUiClient
 import com.example.home.R
 import com.example.home.destinations.MainhomeDestination
+import com.example.home.destinations.OnboardingDestination
 import com.example.home.destinations.SignUpPageDestination
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -48,7 +49,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
-@Destination(start=true)
+@Destination
 @Composable
 fun SignIn(
     navigator:DestinationsNavigator
@@ -228,15 +229,22 @@ fun SignIn(
 
         Row {
             TextBody(
-                modifier= Modifier.offset(y = (getheight()*0.25).dp),colors = MaterialTheme.colors.onSecondary,
+                modifier= Modifier
+                    .offset(y = (getheight()*0.25).dp),
+                colors = MaterialTheme.colors.onSecondary,
                 symbol ="Do not have an account" )
+
             Spacer(modifier = Modifier.width(width = (getwidth()*0.02).dp))
 
             TextBody(
                 modifier = Modifier
                     .offset(y = (getheight() * 0.25).dp)
                     .clickable {
-                        navigator.navigate(SignUpPageDestination)
+
+                        navigator.navigate(
+//                            OnboardingDestination
+                           SignUpPageDestination
+                        )
                     },
                 colors = Color.Blue,
                 symbol = "Sign-Up",
