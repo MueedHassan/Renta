@@ -106,11 +106,9 @@ fun LandlordHome(
                         .height(40.dp)
                         .fillMaxWidth(0.80f)
                         .align(Alignment.CenterHorizontally),
-                ){
-                    Text(
+                ){ Text(
                         text =" Switch To Tenants/Host",
-                        style=MaterialTheme.typography.bodyLarge
-                    )
+                        style=MaterialTheme.typography.bodyLarge)
                 }
                 NavigationDrawerItem(
                     label = { Text(text ="Add New Property") },

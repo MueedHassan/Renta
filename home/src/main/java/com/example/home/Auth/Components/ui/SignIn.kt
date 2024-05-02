@@ -240,11 +240,8 @@ fun SignIn(
                 modifier = Modifier
                     .offset(y = (getheight() * 0.25).dp)
                     .clickable {
-
                         navigator.navigate(
-//                            OnboardingDestination
-                           SignUpPageDestination
-                        )
+                           SignUpPageDestination)
                     },
                 colors = Color.Blue,
                 symbol = "Sign-Up",

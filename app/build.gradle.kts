@@ -5,6 +5,9 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id ("com.google.devtools.ksp")version "1.9.22-1.0.16"
     id("com.google.gms.google-services")
+    id ("org.jetbrains.kotlin.plugin.serialization")
+
+
 }
 kotlin {
     sourceSets {
@@ -21,6 +24,9 @@ android {
     compileSdk = 34
     buildFeatures {
         compose = true
+    }
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
     }
 
     composeOptions {
@@ -61,6 +67,7 @@ android {
         }
     }
 }
+
 
 dependencies {
 
@@ -131,6 +138,20 @@ dependencies {
     implementation ("androidx.credentials:credentials:1.2.2")
     implementation ("androidx.credentials:credentials-play-services-auth:1.2.2")
     implementation ("com.google.android.libraries.identity.googleid:googleid:1.1.0")
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
+    implementation("com.google.firebase:firebase-ml-modeldownloader")
+    implementation("org.tensorflow:tensorflow-lite:2.3.0")
+    val ktorversion="2.3.10"
+    implementation("io.ktor:ktor-client-android:$ktorversion")
+    implementation("io.ktor:ktor-client-serialization:$ktorversion")
+    implementation("io.ktor:ktor-client-logging:$ktorversion")
+    implementation("io.ktor:ktor-server-content-negotiation:$ktorversion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorversion")
+    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation("io.ktor:ktor-client-apache:$ktorversion")
+    implementation("io.ktor:ktor-server-netty:1.6.5")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 }
 /*
 repositories {

@@ -74,7 +74,6 @@ fun Onboarding(navigator: DestinationsNavigator){
             state=pagerState,
             pageSize = PageSize.Fill
         ) { index ->
-
             Box(modifier=Modifier.fillMaxSize())
             {
                 Image(
@@ -93,14 +92,8 @@ fun Onboarding(navigator: DestinationsNavigator){
                     navigator=navigator
                 )
             }
-
-
-
-
         }
-
     }
-
 }
 @Composable
 fun OnBoardingGradient(modifier: Modifier = Modifier) {
@@ -119,7 +112,6 @@ fun OnBoardingGradient(modifier: Modifier = Modifier) {
             )
     )
 }
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnBoardingCardFooter(
@@ -132,7 +124,6 @@ fun OnBoardingCardFooter(
     navigator: DestinationsNavigator
 
 ) {
-
     Box(
         modifier = Modifier
             .then(modifier)
@@ -140,14 +131,11 @@ fun OnBoardingCardFooter(
             .fillMaxWidth()
             .height(154.dp)
     ) {
-
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
-
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-
                 modifier = Modifier.fillMaxWidth(),
                 fontSize = 22.sp,
                 lineHeight = 28.sp,
@@ -157,7 +145,6 @@ fun OnBoardingCardFooter(
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight(500)),
                 letterSpacing = 0.1.sp,
             )
-
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 fontSize = 16.sp,
@@ -208,7 +195,6 @@ fun OnBoardingCardFooter(
                         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight(500)),
                         letterSpacing = 0.1.sp,
                     )
-
                 }
                 else{
                     Text(
@@ -221,7 +207,6 @@ fun OnBoardingCardFooter(
                         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight(500)),
                         letterSpacing = 0.1.sp,
                     )
-
                 }
             }
             Row(
@@ -234,24 +219,16 @@ fun OnBoardingCardFooter(
                     textAlign = TextAlign.Center,
                     fontSize = 12.sp,
                     lineHeight = 16.sp,
-
                     )
-
                 Text(
-
                     fontSize = 12.sp,
                     lineHeight = 16.sp,
                     textAlign = TextAlign.Center,
-
                     text = context.getString(R.string.privacy_policy),
                     color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight(500)),
-
                     )
-
             }
-
-
         }
     }}
 

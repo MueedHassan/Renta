@@ -57,7 +57,6 @@ data class ChatScreenUiHandlers(
     val onSendMessage: (String) -> Unit = {},
     val onResendMessage: (Message) -> Unit = {}
 )
-
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(

@@ -1,9 +1,11 @@
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id ("com.google.devtools.ksp")version "1.9.22-1.0.16"
     id("kotlin-kapt")
-//  id("com.google.android.gms:play-services-ads-identifier")
+    id ("org.jetbrains.kotlin.plugin.serialization")
+
 }
 
 
@@ -30,12 +32,12 @@ android {
     }
     defaultConfig {
         minSdk = 33
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
         vectorDrawables {
             useSupportLibrary = true
         }
+
     }
 
     buildTypes {
@@ -61,6 +63,9 @@ android {
     }
 
 }
+
+
+
 //repositories {
 //    google()
 //    mavenCentral()
@@ -155,10 +160,25 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-auth")
     implementation ("com.google.firebase:firebase-core:21.1.1")
-
     // Also add the dependency for the Google Play services library and specify its version
     implementation("com.google.android.gms:play-services-auth:21.1.0")
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-ml-modeldownloader")
+    // Also add the dependency for the TensorFlow Lite library and specify its version
+    implementation("org.tensorflow:tensorflow-lite:2.3.0")
 
+    val ktorversion="2.3.10"
+    implementation("io.ktor:ktor-client-android:$ktorversion")
+    implementation("io.ktor:ktor-client-serialization:$ktorversion")
+    implementation("io.ktor:ktor-client-logging:$ktorversion")
+    implementation("io.ktor:ktor-server-content-negotiation:$ktorversion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorversion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorversion")
+    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation("io.ktor:ktor-client-apache:$ktorversion")
+    implementation("io.ktor:ktor-server-netty:1.6.5")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation ("com.google.code.gson:gson:2.10")
 }
 /*
 }
