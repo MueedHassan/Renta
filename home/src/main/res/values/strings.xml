@@ -11,4 +11,5 @@
     <string name="web_client_id" >149560507761-hpuou4nr4dsqvugs7tdt9rcfr8om51at.apps.googleusercontent.com</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="terms_conditions"><![CDATA[Term & Condition]]></string>
+    <string name="selected_post_response">selected_post_response</string>
 </resources>

@@ -174,8 +174,8 @@ fun SignIn(
             modifier= Modifier
                 .width(width = (getwidth() * 0.80).dp)
                 .offset(y = (getheight() * 0.05).dp),
-            labels = "Phone",
-            placeholders ="92+" )
+            labels = "Email",
+            placeholders ="mh@yahoo.com" )
        var password= TextField(
             modifier= Modifier
                 .width(width = (getwidth() * 0.80).dp)
@@ -240,11 +240,8 @@ fun SignIn(
                 modifier = Modifier
                     .offset(y = (getheight() * 0.25).dp)
                     .clickable {
-
                         navigator.navigate(
-//                            OnboardingDestination
-                           SignUpPageDestination
-                        )
+                           SignUpPageDestination)
                     },
                 colors = Color.Blue,
                 symbol = "Sign-Up",

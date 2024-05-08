@@ -62,11 +62,11 @@ import androidx.wear.compose.material.ExperimentalWearMaterialApi
 import androidx.wear.compose.material.FractionalThreshold
 import androidx.wear.compose.material.rememberSwipeableState
 import androidx.wear.compose.material.swipeable
-import com.example.home.chatbot.chat.ui.ChatActivity
 import com.example.home.destinations.AddNewPropertyDestination
 import com.example.home.destinations.ChatActivityDestination
 import com.example.home.destinations.ChatScreenDestination
 import com.example.home.destinations.LandlordHomeDestination
+import com.example.home.destinations.TouristRecommendationDestination
 import com.example.home.entities.Constants
 import com.example.home.tenants.module.NavHostContainer
 import com.ramcosta.composedestinations.annotation.Destination
@@ -83,6 +83,7 @@ fun Mainhome(
     var offset by remember { mutableStateOf(0f) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -105,13 +106,11 @@ fun Mainhome(
                                 popBackStack()
                                 navigate(LandlordHomeDestination)
                             }
-                        }
-                    ,
+                        },
                     ){
                     Text(
                         text =" Switch To Host/Landlord",
                         style=MaterialTheme.typography.bodyLarge
-
                     )
                 }
                 NavigationDrawerItem(
@@ -127,21 +126,35 @@ fun Mainhome(
     ){ Scaffold(
             modifier = Modifier
                 .fillMaxSize(),
-
             bottomBar ={
                 BottomNavigationBar(navController = navController)
-
             },
         floatingActionButton = {
-            FloatingActionButton(onClick = { navigator.navigate(
-                ChatActivityDestination
-            ) },
-                modifier = Modifier
+            Column (){
+                FloatingActionButton(onClick = { navigator.navigate(
+                    ChatActivityDestination
+                ) },
+                    modifier = Modifier
+                        .height(50.dp)
+                        .width(50.dp)
+                ) {
+                    Icon(Icons.Default.ChatBubble, contentDescription = "Add")
+                }
+
+                Box(modifier = Modifier
+                    .background(
+                        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
                     .height(50.dp)
-                    .width(50.dp)
-            ) {
-                Icon(Icons.Default.ChatBubble, contentDescription = "Add")
+                    .width(100.dp)
+                    .clickable { navigator.navigate(
+                    TouristRecommendationDestination
+                ) },
+
+                ) {
+                    Icon(Icons.Default.ChatBubble, contentDescription = "Add")
+                 }
             }
+
         }
         ) { values ->
             offset= statelazy.firstVisibleItemIndex.toFloat()
@@ -150,7 +163,6 @@ fun Mainhome(
                 padding = values,
                 navigator=navigator
                 )
-//
         }
     }}
 @Composable
@@ -300,6 +312,7 @@ private fun Swipeable() {
     val swipeableState = rememberSwipeableState(0)
     val sizePx = with(LocalDensity.current) { squareSize.toPx() }
     val anchors = mapOf(0f to 0, sizePx to 1) // Maps anchor points (in px) to states
+
     Box(
         modifier = Modifier
             .padding(
