@@ -51,7 +51,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
 import androidx.wear.compose.material.MaterialTheme
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
@@ -254,7 +253,7 @@ fun HotelItem(postResponse: PostResponse,navigator: DestinationsNavigator) {
                 modifier = Modifier.requiredSize(200.dp),
                 contentScale = ContentScale.FillBounds
             )
-            FavouriteButton(modifier=Modifier.padding(start = 10.dp,top=10.dp))
+            FavouriteButton(modifier=Modifier.padding(start = 10.dp,top=10.dp),postResponse=postResponse)
 
             Column(modifier = Modifier.padding(start=210.dp, top = 10.dp)) {
                 Text(text = postResponse.hotel, fontSize = 18.sp)
@@ -275,7 +274,8 @@ fun HotelItem(postResponse: PostResponse,navigator: DestinationsNavigator) {
 
 
 @Composable
-fun FavouriteButton(modifier: Modifier) {var isFavourite by remember { mutableStateOf(false) }
+fun FavouriteButton(modifier: Modifier, postResponse: PostResponse) {var isFavourite by remember { mutableStateOf(false) }
+    val viewModel:TouristRecommendationVm= viewModel()
     Box(
         modifier = Modifier
             .then(modifier)
@@ -284,6 +284,11 @@ fun FavouriteButton(modifier: Modifier) {var isFavourite by remember { mutableSt
             .background(color = Color.White)
             .clickable {
                 isFavourite = !isFavourite
+                if (isFavourite) {
+                    viewModel.addToFavourites(postResponse)
+                } else {
+                    viewModel.removeFromFavourites(postResponse)
+                }
             },
         contentAlignment = Alignment.Center
     ) {
@@ -327,7 +332,9 @@ fun getPostResponse(context: Context, key: String): PostResponse? {
 fun propertyScreen( navigator: DestinationsNavigator){
     val context= LocalContext.current
     val post:PostResponse?= getPostResponse(context=context, key ="selected_post_response")
-    Box(modifier =Modifier.fillMaxSize().padding(start = 16.dp,end=16.dp,bottom=16.dp) )
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .padding(start = 16.dp, end = 16.dp, bottom = 16.dp) )
          {
         Column (modifier = Modifier.align(Alignment.TopStart)){
             BackButton(navigator =navigator)
@@ -342,7 +349,12 @@ fun propertyScreen( navigator: DestinationsNavigator){
                         contentScale = ContentScale.FillBounds
                     )
                 }
-                FavouriteButton(modifier=Modifier.padding(start = 10.dp,top=10.dp))
+                if (post != null) {
+                    FavouriteButton(
+                        modifier=Modifier.padding(start = 10.dp,top=10.dp),
+                        postResponse = post
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(4.dp))
             if (post != null) {

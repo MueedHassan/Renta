@@ -21,7 +21,7 @@ object Constants {
             route = "favourites"
         ),
         BottomNavItem(
-            label = "Appointment",
+            label = "Reservation",
             icon =R.drawable.icons8_appointment_80,
             route = "bookappointmentscreen"
         ),

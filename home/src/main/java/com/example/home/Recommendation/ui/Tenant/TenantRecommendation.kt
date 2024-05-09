@@ -57,7 +57,6 @@ import com.example.home.Auth.Components.component.SecondHeading
 import com.example.home.Auth.Components.component.getheight
 import com.example.home.R
 import com.example.home.Recommendation.ui.remote.data.TenantPostResponse
-import com.example.home.destinations.BookingPageDestination
 import com.example.home.destinations.DateTimePickerComponentDestination
 import com.example.home.destinations.propertyTenantScreenDestination
 import com.google.gson.Gson
@@ -276,7 +275,7 @@ fun TenantItem(postResponse: TenantPostResponse,navigator: DestinationsNavigator
                 modifier = Modifier.requiredSize(200.dp),
                 contentScale = ContentScale.FillBounds
             )
-            FavouriteButton(modifier=Modifier.padding(start = 10.dp,top=10.dp))
+            FavouriteButton(modifier=Modifier.padding(start = 10.dp,top=10.dp),postResponse=postResponse)
 
             Column(modifier = Modifier.padding(start=210.dp, top = 10.dp)) {
                 Text(text = postResponse.area, fontSize = 18.sp)
@@ -297,7 +296,8 @@ fun TenantItem(postResponse: TenantPostResponse,navigator: DestinationsNavigator
 
 
 @Composable
-fun FavouriteButton(modifier: Modifier) {var isFavourite by remember { mutableStateOf(false) }
+fun FavouriteButton(modifier: Modifier, postResponse: TenantPostResponse) {var isFavourite by remember { mutableStateOf(false) }
+    val viewModel:TenantRecommendationVm= viewModel()
     Box(
         modifier = Modifier
             .then(modifier)
@@ -306,6 +306,11 @@ fun FavouriteButton(modifier: Modifier) {var isFavourite by remember { mutableSt
             .background(color = Color.White)
             .clickable {
                 isFavourite = !isFavourite
+                if (isFavourite) {
+                    viewModel.addToFavourites(postResponse)
+                } else {
+                    viewModel.removeFromFavourites(postResponse)
+                }
             },
         contentAlignment = Alignment.Center
     ) {
@@ -366,7 +371,12 @@ fun propertyTenantScreen( navigator: DestinationsNavigator){
                         contentScale = ContentScale.FillBounds
                     )
                 }
-                FavouriteButton(modifier=Modifier.padding(start = 10.dp,top=10.dp))
+                if (post != null) {
+                    FavouriteButton(
+                        modifier=Modifier.padding(start = 10.dp,top=10.dp),
+                        postResponse = post
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(4.dp))
             if (post != null) {
