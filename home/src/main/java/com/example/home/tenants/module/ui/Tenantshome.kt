@@ -29,11 +29,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.ButtonDefaults
 import com.example.home.AppBarExpendable
 import com.example.home.AppBarShrinked
 import com.example.home.R
+import com.example.home.Recommendation.ui.Tourist.TouristRecommendationVm
 import com.example.home.destinations.AddNewPropertyDestination
 import com.example.home.destinations.LandlordHomeDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -43,6 +45,7 @@ fun TenantHome(navigator: DestinationsNavigator) {
     var offset by remember { mutableStateOf(0f) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val vm: TouristRecommendationVm = viewModel()
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -60,10 +63,11 @@ fun TenantHome(navigator: DestinationsNavigator) {
                         .height(40.dp)
                         .fillMaxWidth(0.80f)
                         .align(Alignment.CenterHorizontally)
-                        .clickable { navigator.apply {
-                            popBackStack()
-                            navigate(LandlordHomeDestination)
-                        }
+                        .clickable {
+                            navigator.apply {
+                                popBackStack()
+                                navigate(LandlordHomeDestination)
+                            }
                         }
                     ,
                 ){

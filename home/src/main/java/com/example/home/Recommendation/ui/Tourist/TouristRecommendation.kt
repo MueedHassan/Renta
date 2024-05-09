@@ -1,4 +1,4 @@
-package com.example.home.Recommendation.ui.ui
+package com.example.home.Recommendation.ui.Tourist
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.compose.foundation.Image
@@ -59,7 +59,6 @@ import com.example.home.Auth.Components.component.FirstHeading
 import com.example.home.Auth.Components.component.SecondHeading
 import com.example.home.Auth.Components.component.getheight
 import com.example.home.R
-import com.example.home.Recommendation.ui.TouristRecommendationVm
 import com.example.home.Recommendation.ui.remote.data.PostResponse
 import com.example.home.destinations.BookingPageDestination
 import com.example.home.destinations.propertyScreenDestination
@@ -76,7 +75,6 @@ fun TouristRecommendation(navigator:DestinationsNavigator) {
     var post by rememberSaveable { mutableStateOf<List<PostResponse>?>(emptyList()) }
     val vm: TouristRecommendationVm = viewModel()
     var statelazy = rememberLazyListState()
-    val navController = rememberNavController()
     var offset by remember { mutableStateOf(0f) }
     var key by remember { mutableStateOf(false) }
     val context = LocalContext.current

@@ -1,6 +1,7 @@
 package com.example.home.Recommendation.ui.remote.function
 
 import com.example.home.Recommendation.ui.remote.data.PostResponse
+import com.example.home.Recommendation.ui.remote.data.TenantPostResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.android.Android
@@ -27,6 +28,12 @@ interface PostService {
         cityName: String,
         cityRange: String
     ):  List<PostResponse>?
+    suspend fun createTenantPost(
+        loc1:String,
+        loc2:String,
+        loc3:String,
+        range:String
+    ):  List<TenantPostResponse>?
     companion object {
         fun create(): PostService {
             return PostServiceImpl(
@@ -104,6 +111,56 @@ class PostServiceImpl(private val client: HttpClient) : PostService {
             null
         }
 
+
+
+    }
+
+    override suspend fun createTenantPost(
+        loc1: String,
+        loc2: String,
+        loc3: String,
+        range: String
+    ): List<TenantPostResponse>? {
+        val newresponse: List<TenantPostResponse>? = null
+        return try {
+            println("heeheh createpost")
+            val response =
+                client.post(
+                    "http://ec2-44-222-205-3.compute-1.amazonaws.com/House_Recommendation?Preferred_Location_1=$loc1&Preferred_Location_2=$loc2&Preferred_Location_3=$loc3&Price_in_k=$range"){
+                    contentType(ContentType.Application.Json)
+
+                }
+
+            println("hehe post status ${response.body<String>()}")
+            if (response.status.isSuccess()) {
+                val postResponse = response.body<String>()
+                val r=Json.decodeFromString<List<TenantPostResponse>?>(postResponse.toString())
+                println("hehe is success { $r }")
+                // Return the received list of PostResponse
+                return r
+            } else {
+                println("hehe Unsuccesfull")
+                null // Return null if the response status is not successful
+            }
+
+        }
+        catch(e: RedirectResponseException) {
+            // 3xx - responses
+            println("heheh Error: ${e.response.status.description}")
+            null
+        } catch(e: ClientRequestException) {
+            // 4xx - responses
+            println("heheh Error: ${e.response.status.description}")
+            null
+        } catch(e: ServerResponseException) {
+            // 5xx - responses
+            println(" hehe Error: ${e.response.status.description}")
+            println(" hehe Error: ${e.response.body<List<PostResponse>?>()}")
+            null
+        } catch(e: Exception) {
+            println("hehe Error: ${e.message}")
+            null
+        }
 
 
     }

@@ -66,6 +66,7 @@ import com.example.home.destinations.AddNewPropertyDestination
 import com.example.home.destinations.ChatActivityDestination
 import com.example.home.destinations.ChatScreenDestination
 import com.example.home.destinations.LandlordHomeDestination
+import com.example.home.destinations.TenantRecommendationDestination
 import com.example.home.destinations.TouristRecommendationDestination
 import com.example.home.entities.Constants
 import com.example.home.tenants.module.NavHostContainer
@@ -153,6 +154,18 @@ fun Mainhome(
                 ) {
                     Icon(Icons.Default.ChatBubble, contentDescription = "Add")
                  }
+                Box(modifier = Modifier
+                    .background(
+                        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
+                    .height(50.dp)
+                    .width(100.dp)
+                    .clickable { navigator.navigate(
+                        TenantRecommendationDestination
+                    ) },
+
+                    ) {
+                    Icon(Icons.Default.ChatBubble, contentDescription = "Add")
+                }
             }
 
         }

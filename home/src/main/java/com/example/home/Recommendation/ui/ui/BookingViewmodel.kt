@@ -1,9 +1,8 @@
 package com.example.home.Recommendation.ui.ui
 import android.content.Context
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
+import com.example.home.Recommendation.ui.Tourist.getPostResponse
 import com.example.home.Recommendation.ui.remote.data.PostResponse
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 

@@ -1,17 +1,10 @@
-package com.example.home.Recommendation.ui
+package com.example.home.Recommendation.ui.Tourist
 
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
-import androidx.constraintlayout.solver.state.State
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.home.Recommendation.ui.remote.data.PostResponse
 import com.example.home.Recommendation.ui.remote.function.PostService
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
