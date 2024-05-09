@@ -58,6 +58,7 @@ import com.example.home.Auth.Components.component.getheight
 import com.example.home.R
 import com.example.home.Recommendation.ui.remote.data.TenantPostResponse
 import com.example.home.destinations.BookingPageDestination
+import com.example.home.destinations.DateTimePickerComponentDestination
 import com.example.home.destinations.propertyTenantScreenDestination
 import com.google.gson.Gson
 import com.ramcosta.composedestinations.annotation.Destination
@@ -406,7 +407,7 @@ fun propertyTenantScreen( navigator: DestinationsNavigator){
             .align(Alignment.BottomCenter)
             .clickable {
                 navigator.navigate(
-                    BookingPageDestination
+                    DateTimePickerComponentDestination
                 )
             }
             .padding(top = 10.dp)
