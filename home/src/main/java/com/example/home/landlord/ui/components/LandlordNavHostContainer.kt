@@ -23,7 +23,7 @@ fun LandLordNavHostContainer(
 //                FavouritesScreen()
             }
             composable("favourites") {
-                FavouritesScreen()
+//                FavouritesScreen()
             }
             composable("bookappointmentscreen") {
                 BookAppointmentScreen()

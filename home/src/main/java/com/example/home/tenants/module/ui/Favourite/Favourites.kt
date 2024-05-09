@@ -16,6 +16,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.home.Recommendation.ui.Tourist.HotelItem
 import com.example.home.Recommendation.ui.remote.data.PostResponse
@@ -54,7 +57,7 @@ fun FavouritesScreen(navigator: DestinationsNavigator) {
         }
 
         when {
-            hotelSelected -> HotelContent(navigator=navigator)
+            hotelSelected -> HotelContent(navigator)
             homeSelected -> HomeContent()
         }
     }
@@ -71,7 +74,8 @@ fun TopButtonsLayout(
     Column(modifier = modifier.fillMaxWidth()) {
         Row(horizontalArrangement = Arrangement.SpaceEvenly) {
             Box(
-                modifier = modifier.fillMaxWidth(0.5f)
+                modifier = modifier
+                    .fillMaxWidth(0.5f)
                     .height(60.dp)
                     .shadow(8.dp)
                     .clip(shape = RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
@@ -85,14 +89,16 @@ fun TopButtonsLayout(
                 )
             }
             Box(
-                modifier = modifier.fillMaxWidth()
+                modifier = modifier
+                    .fillMaxWidth()
                     .height(60.dp)
                     .shadow(8.dp)
                     .clip(shape = RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
                     .background(
                         color =
                         if (homeSelected) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.surface)
+                        else MaterialTheme.colorScheme.surface
+                    )
                     .clickable {
                         onHomeClick()
                     }
@@ -104,11 +110,17 @@ fun TopButtonsLayout(
         }
     }
 }
+@Destination
 @Composable
 fun HotelContent(navigator:DestinationsNavigator) {
     var post by rememberSaveable { mutableStateOf<List<PostResponse>?>(emptyList()) }
     var statelazy = rememberLazyListState()
-
+    val viewModel:FavouritesViewModel= viewModel()
+    LaunchedEffect(true){
+        viewModel.fetchFavouritesHotel()
+    }
+    val favourites by viewModel.favourites.collectAsState()
+    post=favourites
     post?.let { LazyColumn (
         state = statelazy,
         modifier = Modifier

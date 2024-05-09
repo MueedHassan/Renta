@@ -28,7 +28,7 @@ fun NavHostContainer(
                return@composable
             }
             composable("favourites") {
-                FavouritesScreen()
+                FavouritesScreen(navigator=navigator)
             }
             composable("bookappointmentscreen") {
                 BookAppointmentScreen()
