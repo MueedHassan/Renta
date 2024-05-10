@@ -6,8 +6,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.home.tenants.module.ui.BookAppointmentScreen
-import com.example.home.tenants.module.ui.Favourite.FavouritesScreen
 
 @Composable
 fun LandLordNavHostContainer(
@@ -26,7 +24,7 @@ fun LandLordNavHostContainer(
 //                FavouritesScreen()
             }
             composable("bookappointmentscreen") {
-                BookAppointmentScreen()
+//                BookAppointmentScreen()
             }
         })
 }

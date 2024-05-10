@@ -57,9 +57,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 import java.sql.Date
+import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination
@@ -71,39 +73,36 @@ fun BookingPage(navigator: DestinationsNavigator) {
     val snackScope = rememberCoroutineScope()
     SnackbarHost(hostState = snackState, Modifier.zIndex(1f))
     val state = rememberDateRangePickerState()
-    val vm:BookingViewModel= viewModel()
-    var startDateFormatted by remember {
-        mutableStateOf("")
-    }
-    var endDateFormatted by remember {
-        mutableStateOf("")
-    }
-    var isCLicked by remember {
-      mutableStateOf((false))
-    }
-    val context= LocalContext.current
-
+    val vm: BookingViewModel = viewModel()
+    var startDateFormatted by remember { mutableStateOf("") }
+    var endDateFormatted by remember { mutableStateOf("") }
+    var isCLicked by remember { mutableStateOf(false) }
+    val context=LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(text="Booking",
-             style=MaterialTheme.typography.headlineMedium,
-             color=MaterialTheme.colorScheme.primary,
-             modifier = Modifier.padding(bottom=10.dp)
-            )
-        Divider(modifier=Modifier.background(
-            color=MaterialTheme.colorScheme.outline)
+        Text(
+            text = "Booking",
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(bottom = 10.dp)
         )
-        Text(text="Select Duration Of Stay",
-            style=MaterialTheme.typography.bodyMedium,
-            color=MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(bottom=10.dp)
+        Divider(
+            modifier = Modifier.background(
+                color = MaterialTheme.colorScheme.outline
+            )
+        )
+        Text(
+            text = "Select Duration Of Stay",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(bottom = 10.dp)
         )
         Box(
-            modifier= Modifier
+            modifier = Modifier
                 .background(
                     color = MaterialTheme.colorScheme.primary,
                     shape = RoundedCornerShape(100.dp)
@@ -112,21 +111,20 @@ fun BookingPage(navigator: DestinationsNavigator) {
                 .height(40.dp)
                 .padding(top = 10.dp)
                 .clickable {
-                    isCLicked = true
+                    isCLicked = !isCLicked
                 }
-
-        ){
+        ) {
             Text(
                 text = "Select Date",
                 color = MaterialTheme.colorScheme.surface,
                 modifier = Modifier.align(Alignment.Center)
-
             )
-
         }
-        if(isCLicked)
-        {
-            Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
+        if (isCLicked) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Top
+            ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -135,43 +133,45 @@ fun BookingPage(navigator: DestinationsNavigator) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    IconButton(onClick = { isCLicked=false }) {
+                    IconButton(onClick = { isCLicked = false }) {
                         Icon(Icons.Filled.Close, contentDescription = "Localized description")
                     }
                     TextButton(
                         onClick = {
                             snackScope.launch {
-                                val range =
-                                    state.selectedStartDateMillis!!..state.selectedEndDateMillis!!
+                                val range = state.selectedStartDateMillis!!..state.selectedEndDateMillis!!
                                 snackState.showSnackbar("Saved range (timestamps): $range")
                                 val startDateMillis = range.first
                                 val endDateMillis = range.last
-                                withContext(Dispatchers.Main){
-                                    startDateFormatted = formatMillisToDate(startDateMillis)
-                                    endDateFormatted = formatMillisToDate(endDateMillis)
-                                }
+                                startDateFormatted = formatMillisToDate(startDateMillis)
+                                endDateFormatted = formatMillisToDate(endDateMillis)
+                                if(startDateFormatted=="No Date Selected")
+                                {
 
+                                    snackState.showSnackbar("Select Proper Date")
+
+                                }
+                                else
+                                { snackState.showSnackbar("Saved range (timestamps): $startDateFormatted and $endDateFormatted")
+
+                                }
+                                isCLicked = false
                             }
                         },
                         enabled = state.selectedEndDateMillis != null
                     ) {
-                        Text(text = "Save",
-                            modifier=Modifier.clickable {
-                                isCLicked=false
-                            }
-                        )
+                        Text(text = "Save")
                     }
                 }
                 DateRangePicker(state = state, modifier = Modifier.weight(1f))
             }
         }
-        Divider(modifier=Modifier.background(
-            color=MaterialTheme.colorScheme.outline)
-        )
-        Text(text="Number Of Adults",
-            style=MaterialTheme.typography.bodyMedium,
-            color=MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(bottom=5.dp)
+        Divider(modifier = Modifier.background(color = MaterialTheme.colorScheme.outline))
+        Text(
+            text = "Number Of Adults",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(bottom = 5.dp)
         )
         OutlinedTextField(
             value = adults.toString(),
@@ -180,13 +180,12 @@ fun BookingPage(navigator: DestinationsNavigator) {
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
-        Divider(modifier=Modifier.background(
-            color=MaterialTheme.colorScheme.outline)
-        )
-        Text(text="Number Of Children",
-            style=MaterialTheme.typography.bodyMedium,
-            color=MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(bottom=10.dp)
+        Divider(modifier = Modifier.background(color = MaterialTheme.colorScheme.outline))
+        Text(
+            text = "Number Of Children",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(bottom = 10.dp)
         )
         OutlinedTextField(
             value = children.toString(),
@@ -196,30 +195,33 @@ fun BookingPage(navigator: DestinationsNavigator) {
             modifier = Modifier.fillMaxWidth()
         )
 
-
         Button(
-            onClick = { vm.viewModelScope.launch {
-                vm.bookHotel(adults = adults,children=children,
-                    startdate = startDateFormatted,
-                    enddate = endDateFormatted,
-                    context = context)
-
-            }
-                      navigator.navigate(MainhomeDestination)},
+            onClick = {
+                vm.viewModelScope.launch {
+                    vm.bookHotel(
+                        adults = adults,
+                        children = children,
+                        startdate = startDateFormatted,
+                        enddate = endDateFormatted,
+                        context = context
+                    )
+                }
+                navigator.navigate(MainhomeDestination)
+            },
             modifier = Modifier.align(Alignment.End)
         ) {
             Text("Confirm Booking")
         }
     }
 }
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DatePicker(){
-
-
-}
-fun formatMillisToDate(millis: Long): String {
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    val date = Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault()).toLocalDate()
-    return formatter.format(date)
+fun formatMillisToDate(millis: Long?): String {
+    val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val selectedDate = java.util.Calendar.getInstance().apply {
+        timeInMillis =millis ?: System.currentTimeMillis()
+    }
+    return if (selectedDate.after(java.util.Calendar.getInstance())) {
+        dateFormatter.format(selectedDate.time)
+    } else {
+        "No Date Selected"
+    }
 }

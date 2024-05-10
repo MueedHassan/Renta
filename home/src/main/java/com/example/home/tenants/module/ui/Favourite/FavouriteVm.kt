@@ -2,6 +2,7 @@ package com.example.home.tenants.module.ui.Favourite
 
 import androidx.lifecycle.ViewModel
 import com.example.home.Recommendation.ui.remote.data.PostResponse
+import com.example.home.Recommendation.ui.remote.data.TenantPostResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +15,8 @@ class FavouritesViewModel : ViewModel() {
 
     private val _favourites = MutableStateFlow<List<PostResponse>>(emptyList())
     val favourites: StateFlow<List<PostResponse>> = _favourites
+    private val _favouritesHome = MutableStateFlow<List<TenantPostResponse>>(emptyList())
+    val favouritesHome: StateFlow<List<TenantPostResponse>> = _favouritesHome
 
     fun fetchFavouritesHotel() {
         val userId = auth.currentUser?.uid
@@ -41,12 +44,12 @@ class FavouritesViewModel : ViewModel() {
                 .collection("Tenantfavourite")
                 .get()
                 .addOnSuccessListener { documents ->
-                    val favouritesList = mutableListOf<PostResponse>()
+                    val favouritesList = mutableListOf<TenantPostResponse>()
                     for (document in documents) {
-                        val postResponse = document.toObject(PostResponse::class.java)
-                        favouritesList.add(postResponse)
+                        val TenantpostResponse = document.toObject(TenantPostResponse::class.java)
+                        favouritesList.add(TenantpostResponse)
                     }
-                    _favourites.value = favouritesList
+                    _favouritesHome.value = favouritesList
                 }
                 .addOnFailureListener { exception ->
                     // Handle failure

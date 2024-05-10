@@ -35,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -59,14 +60,7 @@ fun DateTimePickerComponent(navigator: DestinationsNavigator) {
     var time by rememberSaveable { mutableStateOf("") }
     val vm:AppointmentViewModel= viewModel()
     var key by remember { mutableStateOf(false) }
-    LaunchedEffect(key){
-
-
-
-
-
-
-    }
+    val context= LocalContext.current
 Box(modifier = Modifier.fillMaxSize()) {
     Column(
     modifier = Modifier
@@ -138,13 +132,11 @@ Box(modifier = Modifier.fillMaxSize()) {
         Text(text = "Time Picker")
     }
 
-
-
     }
     Button(
         onClick = {
             vm.viewModelScope.launch {
-                vm.storeAppointment(name=name,time=time, date = date)
+                vm.storeAppointment(name=name,time=time, date = date,context=context)
             }
             navigator.navigate(MainhomeDestination)
         },

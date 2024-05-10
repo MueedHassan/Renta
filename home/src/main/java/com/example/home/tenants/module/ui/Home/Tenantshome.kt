@@ -1,4 +1,4 @@
-package com.example.home.tenants.module.ui
+package com.example.home.tenants.module.ui.Home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box

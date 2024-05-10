@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -30,8 +31,10 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
+import com.example.home.Recommendation.ui.Tenant.TenantItem
 import com.example.home.Recommendation.ui.Tourist.HotelItem
 import com.example.home.Recommendation.ui.remote.data.PostResponse
+import com.example.home.Recommendation.ui.remote.data.TenantPostResponse
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -58,7 +61,7 @@ fun FavouritesScreen(navigator: DestinationsNavigator) {
 
         when {
             hotelSelected -> HotelContent(navigator)
-            homeSelected -> HomeContent()
+            homeSelected -> HomeContent(navigator)
         }
     }
 }
@@ -133,6 +136,23 @@ fun HotelContent(navigator:DestinationsNavigator) {
 }
 
 @Composable
-fun HomeContent() {
-    // Display home-related content
+fun HomeContent(navigator:DestinationsNavigator) {
+    var post by rememberSaveable { mutableStateOf<List<TenantPostResponse>?>(emptyList()) }
+    var statelazy = rememberLazyListState()
+    val viewModel:FavouritesViewModel= viewModel()
+    LaunchedEffect(true){
+        viewModel.fetchFavouritesHome()
+    }
+    val favourites by viewModel.favouritesHome.collectAsState()
+    post=favourites
+    post?.let { LazyColumn (
+        state = statelazy,
+        modifier = Modifier
+            .fillMaxSize()
+            ){
+        items(post ?: emptyList()) { postResponse ->
+            TenantItem(postResponse,navigator)
+        }
+    }
+    }
 }
