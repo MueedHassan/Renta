@@ -1,4 +1,4 @@
-package com.example.home.tenants.module.ui
+package com.example.home.tenants.module.ui.Home.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

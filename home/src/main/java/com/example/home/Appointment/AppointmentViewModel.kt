@@ -47,7 +47,7 @@ class AppointmentViewModel:ViewModel() {
             "date" to date,
             "time" to time,
             "approved" to "No",
-            " TenantPostResponse" to postResponse
+            "TenantPostResponse" to postResponse
         )
         firestore.collection("appointments")
             .add(appointment)

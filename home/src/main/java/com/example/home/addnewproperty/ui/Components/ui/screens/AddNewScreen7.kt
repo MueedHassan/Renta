@@ -56,14 +56,21 @@ import org.koin.androidx.compose.koinViewModel
 @Destination
 @Composable
 fun AddnewScrren7(navigator: DestinationsNavigator){
-    val rentaltype= listOf("Long Term Rental","Short Term Rental","Only Family ","All Boys","All Girls")
+    val rentaltype= listOf("Long Term Rental","Short Term Rental")
+    val renterstatus= listOf("Only Family","All Boys","All Girls")
     var selectedstatus by rememberSaveable {
+        mutableStateOf("")
+    }
+    var selectedRenterstatus by rememberSaveable {
         mutableStateOf("")
     }
    var maxpeople by rememberSaveable {
        mutableStateOf(" ")
    }
     var propertystatus by rememberSaveable {
+        mutableStateOf(" ")
+    }
+    var propertyRenterstatus by rememberSaveable {
         mutableStateOf(" ")
     }
     var phonenumber by rememberSaveable {
@@ -73,14 +80,12 @@ fun AddnewScrren7(navigator: DestinationsNavigator){
         mutableStateOf(" ")
     }
     var data :HashMap<String,Any?> = hashMapOf(
-        "Max Occupancy" to maxpeople,
-        "Property Status" to propertystatus,
-        "phone Number"  to phonenumber,
-        "Email" to email,
+        "MaxOccupancy" to maxpeople,
+        "PropertyStatus" to propertystatus,
+        "RenterStatus" to propertyRenterstatus,
+        "phoneNumber"  to phonenumber,
     )
-    val addNewPropertyViewModel: AddNewPropertyViewModel = koinViewModel<AddNewPropertyViewModel>()
-
-
+    val addNewPropertyViewModel:AddNewPropertyViewModel = koinViewModel<AddNewPropertyViewModel>()
     Box (modifier = Modifier
         .padding(top = 10.dp, start = 10.dp, end = 10.dp)
         .fillMaxWidth()
@@ -133,10 +138,10 @@ fun AddnewScrren7(navigator: DestinationsNavigator){
                         style= MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.W900),
                         modifier = Modifier.padding(bottom = 10.dp)
                     )
-                    LazyHorizontalGrid(rows = GridCells.Fixed(2),
+                    LazyHorizontalGrid(rows = GridCells.Fixed(1),
                         verticalArrangement = Arrangement.spacedBy(16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp) ,
-                        modifier = Modifier.height(100.dp)
+                        horizontalArrangement = Arrangement.spacedBy(5.dp) ,
+                        modifier = Modifier.height(45.dp)
 
                     ) {
                         items(rentaltype.size){item->
@@ -151,11 +156,59 @@ fun AddnewScrren7(navigator: DestinationsNavigator){
                         }
                     }
                 }
+
             }
-           phonenumber= PhoneNumberInputWithCountryDropdown()
-            email=AddressRow(icon = R.drawable.size, label = "Email", labeltext ="@yahoo.com")
+            Row (modifier = Modifier.padding(top = 10.dp))
+            {
+                Box(modifier = Modifier
+                    .clip(shape = RoundedCornerShape(30.dp))
+                    .background(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.1f))
+                    .width(40.dp)
+                    .height(40.dp)
+                    .align(Alignment.Top)
+                )
+                {
+                    Icon(
+                        painter = painterResource(id = R.drawable.images),
+                        contentDescription ="Icon",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier= Modifier
+                            .size(20.dp)
+                            .align(Alignment.Center)
+                    )
+                }
+
+                Column (modifier = Modifier.padding(start = 10.dp))
+                {
+                    Text(
+                        text = "Renter Status",
+                        style= MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.W900),
+                        modifier = Modifier.padding(bottom = 10.dp)
+                    )
+                    LazyHorizontalGrid(rows = GridCells.Fixed(1),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(5.dp) ,
+                        modifier = Modifier.height(45.dp)
+
+                    ) {
+                        items(renterstatus.size){item->
+                            WashroomBathroomButton(
+                                text = renterstatus[item],
+                                isSelected = selectedRenterstatus==renterstatus[item],
+                                onSelected = {
+                                        selected->
+                                    selectedRenterstatus=renterstatus[item]
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+            phonenumber= PhoneNumberInputWithCountryDropdown()
             propertystatus=selectedstatus
+            propertyRenterstatus=selectedRenterstatus
         }
+
         ProgressIndicator(
             progressindicator = 1f,
             navigator =navigator,

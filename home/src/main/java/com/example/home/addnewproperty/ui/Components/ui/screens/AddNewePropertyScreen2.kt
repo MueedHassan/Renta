@@ -107,14 +107,14 @@ fun AddNewScreen2(
 
         }
         val data = hashMapOf(
-            "Place Type" to selectedType,
-            "timestamp" to FieldValue.serverTimestamp()
+            "PlaceType" to selectedType,
+            "timestamp" to FieldValue.serverTimestamp(),
+            "ownerId" to addNewPropertyViewModel.getCurrentUserId()
         )
         var progressindicator = 0.2f
         var destination = AddNewScreen3Destination
         var modifier = Modifier.align(Alignment.BottomStart)
         var flag=false
-
             Box(
                 modifier = Modifier
                     .fillMaxWidth()

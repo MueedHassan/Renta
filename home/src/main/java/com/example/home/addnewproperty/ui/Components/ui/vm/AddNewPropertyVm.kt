@@ -7,6 +7,7 @@ import com.example.home.addnewproperty.ui.Components.ui.repo.AddNewPropertyScree
 import com.example.home.addnewproperty.ui.Components.ui.repo.FirebaseImageRepository
 import com.example.home.addnewproperty.ui.Components.ui.repo.GetRecentID
 import com.example.home.addnewproperty.ui.Components.ui.repo.UpdateDoc
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -25,6 +26,10 @@ public class AddNewPropertyViewModel(
         println("add $propertyId")
         return propertyId
     }
+     fun getCurrentUserId(): String? {
+        return FirebaseAuth.getInstance().currentUser?.uid
+    }
+
 
     suspend fun getRecentId(): String? {
         return getRecentID.getMostRecentDocumentId()
