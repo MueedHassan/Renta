@@ -30,7 +30,8 @@ class TouristRecommendationVm : ViewModel() {
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-            } else {
+            }
+            else {
                 // Handle the case where any of the variables are empty
                 // Maybe show an error message or log a warning
             }

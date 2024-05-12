@@ -123,14 +123,6 @@ fun LandlordHome(
     ){ Scaffold(
         modifier = Modifier
             .fillMaxSize(),
-        topBar = {
-            if(offset.toInt() ==0)
-            { AppBarExpendable(drawerstate=drawerState,scope=scope)
-            }
-            else
-            { AppBarShrinked()
-            }
-        },
         bottomBar ={
             LandLordBottomNavigationBar(navController = navController)
         },
@@ -459,52 +451,5 @@ fun LandLordBottomNavigationBar(navController: NavHostController) {
                 alwaysShowLabel = true
             )
         }
-    }
-}
-@Composable
-fun NavigationDrawer(){
-    ModalNavigationDrawer(
-        drawerContent = {
-            ModalDrawerSheet {
-                Text("Drawer title", modifier = Modifier.padding(16.dp))
-                Divider()
-                NavigationDrawerItem(
-                    label = { Text(text = "Drawer Item") },
-                    selected = false,
-                    onClick = { /*TODO*/ }
-                )
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.CenterVertically),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                )
-                {
-                }
-            }
-        }
-    ){
-    }
-}
-@Composable
-fun BottomColumn(icon: Int, text: String, modifier: Modifier){
-    Column(
-        modifier=Modifier.then(modifier)
-    ) {
-        Icon(
-            painter = painterResource(id =icon),
-            contentDescription = "Line",
-            modifier= Modifier
-                .size(30.dp)
-                .align(Alignment.CenterHorizontally)
-            ,
-            tint = MaterialTheme.colorScheme.primary
-        )
-        Text(
-            modifier=Modifier,
-            text = text,
-            color = MaterialTheme.colorScheme.primary,
-            style = MaterialTheme.typography.bodySmall,
-            textAlign = TextAlign.Center,
-        )
-
     }
 }
