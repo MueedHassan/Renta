@@ -1,15 +1,32 @@
 package com.example.home.tenants.module.ui.Home.ui
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -31,7 +48,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.material.Button
@@ -41,11 +61,11 @@ import com.example.home.AppBarExpendable
 import com.example.home.AppBarShrinked
 import com.example.home.R
 import com.example.home.Recommendation.ui.Tourist.TouristRecommendationVm
-import com.example.home.Recommendation.ui.remote.data.TenantPostResponse
 import com.example.home.destinations.AddNewPropertyDestination
 import com.example.home.destinations.LandlordHomeDestination
 import com.example.home.tenants.module.ui.Home.domain.Property
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TenantHome(navigator: DestinationsNavigator) {
 
@@ -105,16 +125,17 @@ fun TenantHome(navigator: DestinationsNavigator) {
         },
     ) {Scaffold(
         topBar = {
-            if (offset.toInt() == 0) {
-                AppBarExpendable(drawerstate = drawerState, scope = scope)
-            } else {
+            if (offset.toInt()!=0) {
                 AppBarShrinked()
+            } else {
+
+                AppBarExpendable(drawerstate = drawerState, scope = scope)
             }
         },
 
         ) { values ->
-        offset = lazyListState.firstVisibleItemIndex.toFloat()
-       post=properties.value
+         offset = lazyListState.firstVisibleItemIndex.toFloat()
+         post=properties.value
 
         println("property $properties")
         val imageslist = listOf(
@@ -136,56 +157,315 @@ fun TenantHome(navigator: DestinationsNavigator) {
             "$15", "$895",
             "$850", "$650"
         )
-
         LazyColumn(
             state = lazyListState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(values)
 
+
         ) {
-            items(post!!.size) {item->
-                Box(
-                    modifier = Modifier
+            items(post!!.size) { item->
+                PropertyHome( post = post!!, imageslist =imageslist ,item=item)
+                val pagerState = rememberPagerState(pageCount = {
+                    if (post!![item].List_Of_Images_Uris.isNotEmpty())
+                    {
+                        post!![item].List_Of_Images_Uris.size
+                    }
+                    else
+                    {
+                        imageslist.size
+                    }
+
+                })
+                Column(
+                    modifier= Modifier
                         .padding(10.dp)
-                        .clip(shape = RoundedCornerShape(15.dp))
-                        .fillParentMaxWidth(0.9f)
-                ) {
-//                    Image(
-//                        painter =  rememberAsyncImagePainter( post!![item].listOfImagesUris), contentDescription = null,
-//                        modifier = Modifier
-//                            .padding(10.dp)
-//                            .clip(shape = RoundedCornerShape(15.dp))
-//                            .fillParentMaxWidth()
-//                            .height(200.dp)
-//                            .align(Alignment.TopCenter)
-//                    )
-                    Text(
-                        text = post!![item].toString(),
-                        style = MaterialTheme.typography.headlineMedium.copy(),
-                        color = Color.Black,
+                        .clip(shape = RoundedCornerShape(10.dp))
+                )
+                {
+                    HorizontalPager(
+                        state = pagerState,
                         modifier = Modifier
-                            .padding(
-                                start = 40.dp,
-                                bottom = 35.dp
+                            .fillMaxWidth()
+                            .fillMaxSize(),
+                        pageSize = PageSize.Fill
+                    ) { page ->
+                        Box (
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(shape = RoundedCornerShape(10.dp))
+                        ){
+                            CircularProgressIndicator(
+                                modifier = Modifier
+                                    .width(40.dp)
+                                    .height(40.dp)
+                                    .align(Alignment.Center),
+                                color = MaterialTheme.colorScheme.primary,
+                                trackColor = MaterialTheme.colorScheme.surfaceVariant,
                             )
-                            .align(Alignment.BottomStart)
+                            if(post!![item].List_Of_Images_Uris.isNotEmpty()) {
+                                Image(
+                                    painter =  rememberAsyncImagePainter( post!![item].List_Of_Images_Uris[page]), contentDescription = null,
+                                    modifier = Modifier
+                                        .clip(shape = RoundedCornerShape(15.dp))
+                                        .fillMaxWidth()
+                                        .height(350.dp)
+                                        .align(Alignment.TopCenter),
+                                    contentScale = ContentScale.FillBounds
+                                )
+                            }
+                            else
+                            { Image(
+                                painter =  painterResource(id = imageslist[page]), contentDescription = null,
+                                modifier = Modifier
+                                    .clip(shape = RoundedCornerShape(15.dp))
+                                    .fillMaxWidth()
+                                    .height(350.dp)
+                                    .align(Alignment.TopCenter),
+                                contentScale = ContentScale.FillBounds
+                            )
+                            }
+                            Row(
+                                Modifier
+                                    .wrapContentHeight()
+                                    .fillMaxWidth()
+                                    .align(Alignment.BottomCenter)
+                                    .padding(bottom = 20.dp),
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                repeat(pagerState.pageCount) { iteration ->
+                                    val color = if (pagerState.currentPage == iteration)
+                                        MaterialTheme.colorScheme.primary
+                                    else
+                                        MaterialTheme.colorScheme.primary.copy(alpha=0.5f)
+                                    Box(
+                                        modifier = Modifier
+                                            .padding(2.dp)
+                                            .clip(RectangleShape)
+                                            .background(color)
+                                            .size(12.dp)
+                                    )
+                                }
+                            }
+                            FavouritePropertyButton(modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(top = 10.dp, end = 10.dp))
+
+                        }
+
+
+                    }
+                    Text(
+                        text = post!![item].Title.toString(),
+                        style=MaterialTheme.typography.headlineLarge,
+                        color=MaterialTheme.colorScheme.outline,
+                        modifier=Modifier.padding(top=2.dp,start=5.dp)
                     )
-//                    Text(
-//                        text = imagepricelist[it],
-//                        style = MaterialTheme.typography.headlineSmall.copy(),
-//                        color = Color.Black,
-//                        modifier = Modifier
-//                            .padding(
-//                                start = 40.dp,
-//                                bottom = 10.dp
-//                            )
-//                            .align(Alignment.BottomStart)
-//                    )
+                    Text(
+                        text ="Location: ${post!![item].Location.toString()}," +
+                                "${post!![item].City.toString()}",
+                        style=MaterialTheme.typography.headlineMedium,
+                        color=MaterialTheme.colorScheme.outline,
+                        modifier=Modifier.padding(top=5.dp,start=5.dp)
+                    )
+                    Text(
+                        text ="Property Status: ${post!![item].PropertyStatus.toString()}",
+                        style=MaterialTheme.typography.bodyMedium,
+                        color=MaterialTheme.colorScheme.outline,
+                        modifier=Modifier.padding(top=5.dp,start=5.dp)
+                    )
+                    if(post!![item].PropertyStatus=="Long Term Rental")
+                    {
+                        Text(
+                            text ="Prize:RS ${post!![item].Price.toString()} Per Month",
+                            style=MaterialTheme.typography.bodyMedium,
+                            color=MaterialTheme.colorScheme.outline,
+                            modifier=Modifier.padding(top=5.dp,start=5.dp),
+                            fontStyle = FontStyle.Italic
+                        )
+
+                    }
+
+                    else{
+                        Text(
+                            text ="Prize:RS ${post!![item].Price.toString()} Per Night",
+                            style=MaterialTheme.typography.bodyMedium,
+                            color=MaterialTheme.colorScheme.outline,
+                            modifier=Modifier.padding(top=5.dp,start=5.dp,bottom =10.dp),
+                            fontStyle = FontStyle.Italic
+                        )
+                    }
+
+
+
                 }
 
             }
         }
+
+
     }
     }
 }
+@Composable
+fun FavouritePropertyButton(modifier: Modifier) {
+    var isFavourite by remember { mutableStateOf(false) }
+//    val viewModel: TenantRecommendationVm = viewModel()
+    Box(
+        modifier = Modifier
+            .then(modifier)
+            .size(56.dp)
+            .clip(CircleShape)
+            .background(color = Color.White)
+            .clickable {
+                isFavourite = !isFavourite
+//                if (isFavourite) {
+//                    viewModel.addToFavourites(postResponse)
+//                } else {
+//                    viewModel.removeFromFavourites(postResponse)
+//                }
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            imageVector = if (isFavourite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+            contentDescription = null,
+            tint= Color.Red
+
+        )
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun PropertyHome(post: List<Property>, imageslist: List<Int>, item: Int) {
+
+            val pagerState = rememberPagerState(pageCount = {
+                if (post!![item].List_Of_Images_Uris.isNotEmpty())
+                {
+                    post!![item].List_Of_Images_Uris.size
+                }
+                else
+                {
+                    imageslist.size
+                }
+            })
+            Column(
+                modifier= Modifier
+                    .padding(10.dp)
+                    .clip(shape = RoundedCornerShape(10.dp))
+            )
+            {
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxSize(),
+                    pageSize = PageSize.Fill
+                ) { page ->
+                    Box (
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(shape = RoundedCornerShape(10.dp))
+                    ){
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .width(40.dp)
+                                .height(40.dp)
+                                .align(Alignment.Center),
+                            color = MaterialTheme.colorScheme.primary,
+                            trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                        )
+                        if(post!![item].List_Of_Images_Uris.isNotEmpty()) {
+                            Image(
+                                painter =  rememberAsyncImagePainter( post!![item].List_Of_Images_Uris[page]), contentDescription = null,
+                                modifier = Modifier
+                                    .clip(shape = RoundedCornerShape(15.dp))
+                                    .fillMaxWidth()
+                                    .height(350.dp)
+                                    .align(Alignment.TopCenter),
+                                contentScale = ContentScale.FillBounds
+                            )
+                        }
+                        else
+                        { Image(
+                            painter =  painterResource(id = imageslist[page]), contentDescription = null,
+                            modifier = Modifier
+                                .clip(shape = RoundedCornerShape(15.dp))
+                                .fillMaxWidth()
+                                .height(350.dp)
+                                .align(Alignment.TopCenter),
+                            contentScale = ContentScale.FillBounds
+                        )
+                        }
+                        Row(
+                            Modifier
+                                .wrapContentHeight()
+                                .fillMaxWidth()
+                                .align(Alignment.BottomCenter)
+                                .padding(bottom = 20.dp),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            repeat(pagerState.pageCount) { iteration ->
+                                val color = if (pagerState.currentPage == iteration)
+                                    MaterialTheme.colorScheme.primary
+                                else
+                                    MaterialTheme.colorScheme.primary.copy(alpha=0.5f)
+                                Box(
+                                    modifier = Modifier
+                                        .padding(2.dp)
+                                        .clip(RectangleShape)
+                                        .background(color)
+                                        .size(12.dp)
+                                )
+                            }
+                        }
+                        FavouritePropertyButton(modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(top = 10.dp, end = 10.dp))
+
+                    }
+                }
+                Text(
+                    text = post!![item].Title.toString(),
+                    style=MaterialTheme.typography.headlineLarge,
+                    color=MaterialTheme.colorScheme.outline,
+                    modifier=Modifier.padding(top=2.dp,start=5.dp)
+                )
+                Text(
+                    text ="Location: ${post!![item].Location.toString()}," +
+                            "${post!![item].City.toString()}",
+                    style=MaterialTheme.typography.headlineMedium,
+                    color=MaterialTheme.colorScheme.outline,
+                    modifier=Modifier.padding(top=5.dp,start=5.dp)
+                )
+                Text(
+                    text ="Property Status: ${post!![item].PropertyStatus.toString()}",
+                    style=MaterialTheme.typography.bodyMedium,
+                    color=MaterialTheme.colorScheme.outline,
+                    modifier=Modifier.padding(top=5.dp,start=5.dp)
+                )
+                if(post!![item].PropertyStatus=="Long Term Rental")
+                {
+                    Text(
+                        text ="Prize:RS ${post!![item].Price.toString()} Per Month",
+                        style=MaterialTheme.typography.bodyMedium,
+                        color=MaterialTheme.colorScheme.outline,
+                        modifier=Modifier.padding(top=5.dp,start=5.dp),
+                        fontStyle = FontStyle.Italic
+                    )
+
+                }
+                else{
+                    Text(
+                        text ="Prize:RS ${post!![item].Price.toString()} Per Night",
+                        style=MaterialTheme.typography.bodyMedium,
+                        color=MaterialTheme.colorScheme.outline,
+                        modifier=Modifier.padding(top=5.dp,start=5.dp,bottom =10.dp),
+                        fontStyle = FontStyle.Italic
+                    )
+                }
+
+            }
+    }
