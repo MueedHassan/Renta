@@ -5,6 +5,7 @@ plugins {
     id ("com.google.devtools.ksp")version "1.9.22-1.0.16"
     id("kotlin-kapt")
     id ("org.jetbrains.kotlin.plugin.serialization")
+    id("kotlin-parcelize")
 
 }
 

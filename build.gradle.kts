@@ -7,4 +7,5 @@ plugins {
     id("com.google.gms.google-services") version "4.4.1" apply false
     kotlin("jvm") version "1.9.21"
     kotlin("plugin.serialization") version "1.9.21"
+
 }

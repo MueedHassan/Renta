@@ -18,10 +18,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,15 +36,27 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.ButtonDefaults
+import coil.compose.rememberAsyncImagePainter
 import com.example.home.AppBarExpendable
 import com.example.home.AppBarShrinked
 import com.example.home.R
 import com.example.home.Recommendation.ui.Tourist.TouristRecommendationVm
+import com.example.home.Recommendation.ui.remote.data.TenantPostResponse
 import com.example.home.destinations.AddNewPropertyDestination
 import com.example.home.destinations.LandlordHomeDestination
+import com.example.home.tenants.module.ui.Home.domain.Property
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 fun TenantHome(navigator: DestinationsNavigator) {
+
+    var post by rememberSaveable { mutableStateOf<List<Property>?>(emptyList()) }
+    var TenantHomeViewModel:TenantHomeViewModel= viewModel()
+    val propertiesState = remember { TenantHomeViewModel.properties }
+    LaunchedEffect(true){
+        TenantHomeViewModel.getProperties()
+
+    }
+    val properties: State<List<Property>> = TenantHomeViewModel.properties.collectAsState()
     val lazyListState = rememberLazyListState()
     var offset by remember { mutableStateOf(0f) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -98,6 +114,9 @@ fun TenantHome(navigator: DestinationsNavigator) {
 
         ) { values ->
         offset = lazyListState.firstVisibleItemIndex.toFloat()
+       post=properties.value
+
+        println("property $properties")
         val imageslist = listOf(
             R.drawable.home1,
             R.drawable.home3,
@@ -117,6 +136,7 @@ fun TenantHome(navigator: DestinationsNavigator) {
             "$15", "$895",
             "$850", "$650"
         )
+
         LazyColumn(
             state = lazyListState,
             modifier = Modifier
@@ -124,24 +144,24 @@ fun TenantHome(navigator: DestinationsNavigator) {
                 .padding(values)
 
         ) {
-            items(imageslist.size) {
+            items(post!!.size) {item->
                 Box(
                     modifier = Modifier
                         .padding(10.dp)
                         .clip(shape = RoundedCornerShape(15.dp))
                         .fillParentMaxWidth(0.9f)
                 ) {
-                    Image(
-                        painter = painterResource(id = imageslist[it]), contentDescription = null,
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .clip(shape = RoundedCornerShape(15.dp))
-                            .fillParentMaxWidth()
-                            .height(200.dp)
-                            .align(Alignment.TopCenter)
-                    )
+//                    Image(
+//                        painter =  rememberAsyncImagePainter( post!![item].listOfImagesUris), contentDescription = null,
+//                        modifier = Modifier
+//                            .padding(10.dp)
+//                            .clip(shape = RoundedCornerShape(15.dp))
+//                            .fillParentMaxWidth()
+//                            .height(200.dp)
+//                            .align(Alignment.TopCenter)
+//                    )
                     Text(
-                        text = imagetextlist[it],
+                        text = post!![item].toString(),
                         style = MaterialTheme.typography.headlineMedium.copy(),
                         color = Color.Black,
                         modifier = Modifier
@@ -151,17 +171,17 @@ fun TenantHome(navigator: DestinationsNavigator) {
                             )
                             .align(Alignment.BottomStart)
                     )
-                    Text(
-                        text = imagepricelist[it],
-                        style = MaterialTheme.typography.headlineSmall.copy(),
-                        color = Color.Black,
-                        modifier = Modifier
-                            .padding(
-                                start = 40.dp,
-                                bottom = 10.dp
-                            )
-                            .align(Alignment.BottomStart)
-                    )
+//                    Text(
+//                        text = imagepricelist[it],
+//                        style = MaterialTheme.typography.headlineSmall.copy(),
+//                        color = Color.Black,
+//                        modifier = Modifier
+//                            .padding(
+//                                start = 40.dp,
+//                                bottom = 10.dp
+//                            )
+//                            .align(Alignment.BottomStart)
+//                    )
                 }
 
             }

@@ -178,7 +178,7 @@ fun AddNewScreen6(navigator: DestinationsNavigator) {
                 addNewPropertyViewModel.viewModelScope.launch {
                     val imageuris=addNewPropertyViewModel.uploadImagesAndSaveUrls(selectedImageUris)
                     val data:HashMap<String,Any?> = hashMapOf(
-                        "List Of Images Uris" to imageuris
+                        "List_Of_Images_Uris" to imageuris
                     )
                     addNewPropertyViewModel.UpdateDoc(data,addNewPropertyViewModel.getRecentId())
                 }
