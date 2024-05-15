@@ -6,11 +6,18 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
+import com.example.home.landlord.ui.LandLordHomeScreen
+import com.example.home.landlord.ui.LandlordHome
+import com.example.home.landlord.ui.ListingScreen
+import com.example.home.landlord.ui.Reservation
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
 fun LandLordNavHostContainer(
     navController: NavHostController,
-    padding: PaddingValues
+    padding: PaddingValues,
+    navigator: DestinationsNavigator
 ) {
     NavHost(
         navController = navController,
@@ -18,13 +25,15 @@ fun LandLordNavHostContainer(
         modifier = Modifier.padding(paddingValues = padding),
         builder = {
             composable("home") {
-//                FavouritesScreen()
+                LandLordHomeScreen(navigator = navigator)
             }
             composable("favourites") {
-//                FavouritesScreen()
+                Reservation(navigator = navigator)
             }
             composable("bookappointmentscreen") {
-//                BookAppointmentScreen()
+                 ListingScreen(navigator=navigator)
             }
         })
 }
+
+

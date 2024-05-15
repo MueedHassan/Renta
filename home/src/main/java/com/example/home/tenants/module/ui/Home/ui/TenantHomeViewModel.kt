@@ -43,6 +43,7 @@ fun getProperties() {
     }
 
 }
+
     private val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     private val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
     private val auth = FirebaseAuth.getInstance()
@@ -73,7 +74,14 @@ fun getProperties() {
             "date" to date,
             "time" to time,
             "approved" to "No",
-            "property" to postResponse,
+            "title" to (postResponse?.Title.toString()),
+            "image" to if(postResponse?.List_Of_Images_Uris!!.isNotEmpty())
+                    {
+                        postResponse.List_Of_Images_Uris[0]
+                    }
+                    else{
+                        "https://firebasestorage.googleapis.com/v0/b/my-fyp-renta.appspot.com/o/images%2F1715471092756.jpg?alt=media&token=8869a564-0cc6-48f0-8ca1-3c01b95a7e67"
+                    }
 
         )
         firestore.collection("searchedappointments")
@@ -95,12 +103,21 @@ fun getProperties() {
         val bookingsRef = database.collection("searchedbookings")
         val bookingData = mapOf(
             "userId" to userId,
-            "postResponse" to postResponse,
             "adults" to adults,
             "children" to children,
-            "Start Date" to startdate,
-            "End Date" to enddate,
-            "ownerId" to (postResponse?.ownerId)
+            "startdate" to startdate,
+            "enddate" to enddate,
+            "ownerId" to (postResponse?.ownerId),
+            "approved" to "No",
+            "title" to (postResponse?.Title.toString()),
+            "image" to
+                    if(postResponse?.List_Of_Images_Uris!![0].isNotEmpty())
+                    {
+                        postResponse.List_Of_Images_Uris[0]
+                    }
+                    else{
+                        "https://firebasestorage.googleapis.com/v0/b/my-fyp-renta.appspot.com/o/images%2F1715471092756.jpg?alt=media&token=8869a564-0cc6-48f0-8ca1-3c01b95a7e67"
+                    }
         )
         bookingsRef.add(bookingData)
     }

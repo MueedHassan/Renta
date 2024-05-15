@@ -1,4 +1,5 @@
 package com.example.home
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -64,8 +65,8 @@ import androidx.wear.compose.material.rememberSwipeableState
 import androidx.wear.compose.material.swipeable
 import com.example.home.destinations.AddNewPropertyDestination
 import com.example.home.destinations.ChatActivityDestination
-import com.example.home.destinations.ChatScreenDestination
 import com.example.home.destinations.LandlordHomeDestination
+import com.example.home.destinations.SearchDestination
 import com.example.home.destinations.TenantRecommendationDestination
 import com.example.home.destinations.TouristRecommendationDestination
 import com.example.home.entities.Constants
@@ -141,31 +142,29 @@ fun Mainhome(
                 ) {
                     Icon(Icons.Default.ChatBubble, contentDescription = "Add")
                 }
-
-                Box(modifier = Modifier
-                    .background(
-                        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
-                    .height(50.dp)
-                    .width(100.dp)
-                    .clickable { navigator.navigate(
+                Spacer(modifier = Modifier.height(4.dp))
+                FloatingActionButton(onClick = { navigator.navigate(
+                    TenantRecommendationDestination
+                ) },
+                    modifier = Modifier
+                        .height(50.dp)
+                        .width(50.dp)
+                ) {
+                    Image(painterResource(id = R.drawable.tenant), contentDescription = "Add")
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+                FloatingActionButton(onClick = { navigator.navigate(
                     TouristRecommendationDestination
                 ) },
-
+                    modifier = Modifier
+                        .height(50.dp)
+                        .width(50.dp)
                 ) {
-                    Icon(Icons.Default.ChatBubble, contentDescription = "Add")
-                 }
-                Box(modifier = Modifier
-                    .background(
-                        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
-                    .height(50.dp)
-                    .width(100.dp)
-                    .clickable { navigator.navigate(
-                        TenantRecommendationDestination
-                    ) },
-
-                    ) {
-                    Icon(Icons.Default.ChatBubble, contentDescription = "Add")
+                    Image(painterResource(id = R.drawable.flight), contentDescription = "Add",
+                    modifier=Modifier.size(32.dp)
+                    )
                 }
+
             }
 
         }
@@ -179,7 +178,7 @@ fun Mainhome(
         }
     }}
 @Composable
-fun AppBarShrinked() {
+fun AppBarShrinked(navigator: DestinationsNavigator) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -199,12 +198,13 @@ fun AppBarShrinked() {
             modifier = Modifier.padding(
                 start = 10.dp,
                 top = 10.dp
-            )
+            ),
+            navigator=navigator
         )
     }
 }
 @Composable
-fun AppBarExpendable(scope: CoroutineScope, drawerstate: DrawerState) {
+fun AppBarExpendable(scope: CoroutineScope, drawerstate: DrawerState,navigator: DestinationsNavigator) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -247,23 +247,26 @@ fun AppBarExpendable(scope: CoroutineScope, drawerstate: DrawerState) {
             modifier = Modifier.padding(
                 start = 60.dp,
                 top = 100.dp
-            )
+            ),
+            navigator=navigator
         )
     }
 }
 @Composable
 fun SearchRow(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigator: DestinationsNavigator
 ) {
     Row(
         modifier = Modifier
             .then(modifier)
+
             .clip(shape = RoundedCornerShape(40.dp))
     )
     {
-        SearchBox()
+        SearchBox(navigator=navigator)
         Spacer(modifier = Modifier.width(5.dp))
-        FilterBox()
+//        FilterBox()
     }
 }
 @Composable
@@ -287,10 +290,13 @@ fun FilterBox() {
     }
 }
 @Composable
-fun SearchBox() {
+fun SearchBox(navigator: DestinationsNavigator) {
     Box(
         modifier = Modifier
             .height(60.dp)
+            .clickable {
+                navigator.navigate(SearchDestination)
+            }
             .fillMaxWidth(0.8f)
             .padding(start = 0.dp, top = 5.dp, bottom = 5.dp, end = 0.dp)
             .clip(shape = RoundedCornerShape(100.dp))

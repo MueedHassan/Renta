@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class FirebasePostResponse(
     @SerialName("postResponse")
-    val postResponse: PostResponse = PostResponse(),
+    val postResponse: PostResponse=PostResponse(),
     @SerialName("Start Date")
     val startDate: String = "",
     @SerialName("End Date")

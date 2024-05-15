@@ -144,9 +144,7 @@ fun BookingContent(navigator: DestinationsNavigator) {
         items(post ?: emptyList()) { postResponse ->
            FirebaseHotelItem(postResponse,navigator)
         }
-        items(post ?: emptyList()) { postResponse ->
-            FirebaseHotelItem(postResponse,navigator)
-        }
+
     }
     }
 }

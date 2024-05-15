@@ -12,19 +12,14 @@ object LandLordConstants {
             route = "home"
         ),
         LandLordBottomItem  (
-            label = "Favourites",
+            label = "Reservation",
             icon = R.drawable.icons8_favourite,
             route = "favourites"
         ),
         LandLordBottomItem(
-            label = "Appointment",
+            label = "Listing",
             icon = R.drawable.icons8_appointment_80,
             route = "bookappointmentscreen"
         ),
-        LandLordBottomItem(
-            label = "Chat",
-            icon = R.drawable.icons8_chat_32,
-            route = "bookappointmentscreen"
-        )
     )
 }

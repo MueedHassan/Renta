@@ -162,7 +162,7 @@ fun TenantHome(navigator: DestinationsNavigator) {
                     ,
                 ){
                     Text(
-                        text =" Switch To Host/Landlord",
+                        text ="Switch To Host/Landlord",
                         style=MaterialTheme.typography.bodyLarge
 
                     )
@@ -177,13 +177,14 @@ fun TenantHome(navigator: DestinationsNavigator) {
                         /*TODO*/},
                 ) }
         },
-    ) {Scaffold(
+    ) {
+        Scaffold(
         topBar = {
             if (offset.toInt()!=0) {
-                AppBarShrinked()
+                AppBarShrinked(navigator=navigator)
             } else {
 
-                AppBarExpendable(drawerstate = drawerState, scope = scope)
+                AppBarExpendable(drawerstate = drawerState, scope = scope, navigator = navigator)
             }
         },
 

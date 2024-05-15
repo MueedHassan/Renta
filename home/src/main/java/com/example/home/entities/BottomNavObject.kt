@@ -25,10 +25,6 @@ object Constants {
             icon =R.drawable.icons8_appointment_80,
             route = "bookappointmentscreen"
         ),
-        BottomNavItem(
-            label = "Chat",
-            icon =R.drawable.icons8_chat_32,
-            route = "bookappointmentscreen"
-    )
+
     )
 }

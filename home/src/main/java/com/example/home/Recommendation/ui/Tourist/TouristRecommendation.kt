@@ -263,6 +263,9 @@ fun HotelItem(postResponse: PostResponse,navigator: DestinationsNavigator) {
                 Text(text = "Crime: ${postResponse.crimeRate}", fontSize = 14.sp,
                     color = crimeRateColor
                 )
+                Text(text = "User Expected Happiness: ${postResponse.expectedUserHappiness}", fontSize = 14.sp,
+                    color = Color.Yellow
+                )
 
             }
         }
@@ -284,11 +287,11 @@ fun FavouriteButton(modifier: Modifier, postResponse: PostResponse) {var isFavou
             .background(color = Color.White)
             .clickable {
                 isFavourite = !isFavourite
-                if (isFavourite) {
-                    viewModel.addToFavourites(postResponse)
-                } else {
-                    viewModel.removeFromFavourites(postResponse)
-                }
+//                if (isFavourite) {
+//                    viewModel.addToFavourites(postResponse)
+//                } else {
+//                    viewModel.removeFromFavourites(postResponse)
+//                }
             },
         contentAlignment = Alignment.Center
     ) {
@@ -369,6 +372,9 @@ fun propertyScreen( navigator: DestinationsNavigator){
             }
             if (post != null) {
                 Text(text = "Crime Rate: ${post.crimeRate}", style = TextStyle(fontSize = 16.sp))
+            }
+            if (post != null) {
+                Text(text = "User Expected Happiness: ${post.expectedUserHappiness}", style = TextStyle(fontSize = 16.sp))
             }
             if (post != null) {
                 Text(text = "Price: $${post.price}", style = TextStyle(fontSize = 16.sp))

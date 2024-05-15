@@ -40,9 +40,7 @@ class TouristRecommendationVm : ViewModel() {
     }
 
     fun addToFavourites(postResponse: PostResponse) {
-        val userId = auth.currentUser?.uid
-        userId?.let { uid ->
-            firestore.collection("users").document(uid)
+            firestore
                 .collection("Touristfavourite").document(postResponse.toString())
                 .set(postResponse)
                 .addOnSuccessListener {
@@ -51,7 +49,7 @@ class TouristRecommendationVm : ViewModel() {
                 .addOnFailureListener { e ->
                     // Handle failure
                 }
-        }
+
     }
 
     fun removeFromFavourites(postResponse: PostResponse) {
